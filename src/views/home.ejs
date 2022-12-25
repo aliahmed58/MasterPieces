@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Masterpieces Ltd.</title>
+</head>
+<body>
+    <!-- include navbar -->
+    <%- include ('./partials/navbar') %> 
+
+
+    <p class="lead" style="margin-left: 40px; margin-top: 40px">Choose a report type to view</p>
+
+    <div class="row" style="padding: 20px 40px 100px 40px;">
+        <div class="col-sm-4">
+          <div class="card text-center">
+            <div class="card-body" style="padding: 30px">
+                <h5 class="card-title" style="padding: 30px;">Artists</h5>
+                <a href="#" class="btn"  style="background-color: #A0E7D6; padding: 30px; ">View artist reports</a>
+            </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+          <div class="card text-center">
+            <div class="card-body" style="padding: 30px">
+                <h5 class="card-title" style="padding: 30px;">Customers</h5>
+                <a href="#" class="btn"  style="background-color: #A0E7D6; padding: 30px; ">View customer reports</a>
+              </div>
+          </div>
+        </div>
+        <div class="col-sm-4">
+            <div class="card text-center" >
+                <div class="card-body" style="padding: 30px">
+                    <h5 class="card-title" style="padding: 30px;">Owners</h5>
+                    <a href="#" class="btn"  style="background-color: #A0E7D6; padding: 30px;">View owner reports</a>
+                  </div>
+            </div>
+          </div>
+      </div>
+
+</body>
+</html>
