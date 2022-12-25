@@ -1,26 +1,35 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk&display=swap');
+body {
+    font-family: 'Hanken Grotesk', sans-serif;
+    background-color: #0e2439;
+}
 
 hr { 
-    background-color: black;
-    color: black;
-    border-color: black;
+    background-color: white;
+    color: white;
+    border-color: white;
     height: 2px;
     border: 0;
 }
 
+h3 {
+    color: white;
+}
+
 .subcontainer {
-    background-color: #123442;
+    background-color: #1f364d;
     color: white;
     font-size: 1em;
 }
 
 .card {
-    border: 1px solid white;
+    border: 1px solid #0e2439;
     border-radius: 0px;
 }
 
 .col-sm {
     padding: 20px;
-    border: 1px solid white;
+    border: 1px solid #0e2439;
 }
 
 .table-container {
@@ -28,11 +37,23 @@ hr {
 }
 
 thead {
-    background-color: #123442;
+    background-color: #0e2439;
     color: white;
 }
 
 tbody {
-    background-color: #b0d3e2;
+    color: white;
+    background-color: #1f364d;
+}
+
+table.table-bordered{
+    border:1px solid #1f364d;
+    margin-top:20px;
+  }
+table.table-bordered > thead > tr > th{
+    border:1px solid #1f364d;
+}
+table.table-bordered > tbody > tr > td{
+    border:1px solid #0e2439;
 }
 

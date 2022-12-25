@@ -1,22 +1,28 @@
+@import url('https://fonts.googleapis.com/css2?family=Hanken+Grotesk&display=swap');
+body {
+    font-family: 'Hanken Grotesk', sans-serif;
+    background-color: #0e2439;
+    color: white;
+    overflow-x: hidden !important;
+}
+
 .card {
-    background-color: #123442;
+    background-color: #1f364d;
     color: white;
 }
 
 .card:hover {
-    border: 1px solid #123442;
-    background-color: white;
-    color: #123442;
+    border: 2px solid #95b9c7;
     transition: 0.5s all;
 }
 
 .btn {
-    background-color: #95b9c7;
+    background-color: #0e2439;
     padding: 10px;
-    color: black;
+    color: white;
 }
 
 .btn:hover {
     color: white;
-    background-color: #031a24;
+    background-color: #4799eb;
 }
