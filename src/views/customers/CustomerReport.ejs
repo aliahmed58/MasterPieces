@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/public/report.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Rental Report</title>
+</head>
+
+<body>
+    <%- include('../partials/navbar') %>
+
+        <div class="container-fluid">
+            <h3 class="text-center mt-3">Customer Rental Report</h1>
+        </div>
+
+        <hr>
+        <div class="container-fluid">
+            <div class="container subcontainer card">
+                <div class="row info text-center">
+                    <div class="col-sm">
+                        <span class="align-middle">Customer no.: 123193 </span>
+                    </div>
+                    <div class="col-sm">
+                        <span class="align-middle">Customer Name: Salman</span>
+                    </div>
+                    <div class="col-sm">
+                        <span class="align-middle">Customer Category: Lethal</span>
+                    </div>
+                    <div class="col-sm ">
+                        <span class="align-middle">Customer description: <br>boring stupid fuck</span>
+                    </div>
+                </div>
+                <div class="row info text-center">
+                    <div class="col-sm">
+                        <span class="align-middle">Customer Address: L215, Sector 5M, North Karachi</span>
+                    </div>
+                    <div class="col-sm">
+                        <span class="align-middle">Category Discount: 15%</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <hr>
+
+        <div class="contianer table-container">
+            <table class="table text-center table-bordered table-hover table-responsive">
+                <thead>
+                    <tr>
+                        <th scope="col">Painting no.</th>
+                        <th scope="col">Painting Title</th>
+                        <th scope="col">Painting Theme</th>
+                        <th scope="col">Date of Hire</th>
+                        <th scope="col">Date Due Back</th>
+                        <th scope="col">Returned (Y/N)</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    <!-- use for loop to fill the table -->
+                    <% for( let i=0; i < 10; i++ ) { %>
+
+
+                        <tr>
+                            <th scope="row">
+                                <%= i %>
+                            </th>
+                            <td>Caprice de puta</td>
+                            <td>Puta</td>
+                            <td>
+                                20-10-22
+                            </td>
+                            <td>
+                                20-12-23
+                            </td>
+                            <td>N</td>
+                        </tr>
+
+                        <% } %>
+
+                </tbody>
+
+            </table>
+        </div>
+
+
+</body>
+
+</html>

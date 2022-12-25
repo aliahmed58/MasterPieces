@@ -1,0 +1,38 @@
+
+hr { 
+    background-color: black;
+    color: black;
+    border-color: black;
+    height: 2px;
+    border: 0;
+}
+
+.subcontainer {
+    background-color: #123442;
+    color: white;
+    font-size: 1em;
+}
+
+.card {
+    border: 1px solid white;
+    border-radius: 0px;
+}
+
+.col-sm {
+    padding: 20px;
+    border: 1px solid white;
+}
+
+.table-container {
+    margin: 10px;
+}
+
+thead {
+    background-color: #123442;
+    color: white;
+}
+
+tbody {
+    background-color: #b0d3e2;
+}
+

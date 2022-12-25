@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/public/liststyles.css" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Artists</title>
+</head>
+
+<body>
+    <%- include('../partials/navbar') %>
+
+        <!-- each row shall display 4 cards -->
+        <% for( let row=0; row < 3; row++ ) { %>
+            <div class="row">
+                <% for( let col=0; col < 4; col++ ) { %>
+                    <div class="col-sm-3">
+                        <div class="card">
+                            <div class="card-header">
+                                Artist no: <%= 4 * row + col %> 
+                            </div>
+                            <div class="card-body">
+                                <h5 class="card-title">Artist Name: Sam Jackson</h5>
+                                <a href="/artists/report" class="btn">View Report</a>
+                            </div>
+                        </div>
+                    </div>
+                    <% } %>
+            </div>
+            <% } %>
+
+</body>
+
+</html>

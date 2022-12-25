@@ -1,9 +1,19 @@
-.card {
+.row {
+    padding: 10px;
+}
+
+.h5 {
+    color:#123442;
+}
+
+.card:hover {
+    transition: 0.5s all;
     background-color: #123442;
     color: white;
 }
 
-.card:hover {
+.card {
+    margin: 10px;
     border: 1px solid #123442;
     background-color: white;
     color: #123442;
@@ -17,6 +27,8 @@
 }
 
 .btn:hover {
-    color: white;
-    background-color: #031a24;
+    transition: 0.5s all;
+    color:#123442;
+    border: 1px solid white;
+    background-color: white;
 }
