@@ -1,12 +1,9 @@
 const {Router} = require('express');
-
 const router = Router()
 
-router.get('/', (req, res) => {
-    res.render('../src/views/home', {
-        name: 'ali',
-        age: 12
-    })
-})
+// require controllers
+const {renderHomepage} = require('../controllers/HomeController')
+
+router.get('/', renderHomepage)
 
 module.exports = router

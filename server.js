@@ -12,6 +12,7 @@ app.set('view engine', 'ejs')
 
 // set bootstrap as the css directory to use in template files
 app.use("/css", express.static(__dirname + "/node_modules/bootstrap/dist/css"))
+app.use("/public", express.static(__dirname + "/src/public"))
 
 // use home routes
 app.use(homeRoutes)
