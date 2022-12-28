@@ -1,15 +1,24 @@
 require('dotenv').config()
 const oracledb = require('oracledb');
 
-const getdb = async () => {
-    const connection = await oracledb.getConnection({
-        user: process.env.DB_USER,
-        password: process.env.DB_PASS,
-        connectionString: "localhost/xepdb1"
-    });
+const initdb = async () => {
+    try {
 
-    return connection;
+        await oracledb.createPool({
+            user: process.env.DB_USER,
+            password: process.env.DB_PASS,
+            connectionString: "localhost/xepdb1",
+            poolIncrement: 0,
+            poolMin: 4,
+            poolMax: 4
+        })
+
+    }
+    catch (err) {
+        console.log('db init error' + err.message)
+    }
+
 }
 
-module.exports = {getdb};
+module.exports = initdb
 

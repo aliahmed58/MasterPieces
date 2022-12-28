@@ -2,7 +2,7 @@ require('dotenv').config();
 
 const express = require('express');
 const app = express();
-const {getdb} = require('./dbconfig');
+const initdb = require('./dbconfig');
 
 // get routers from routes
 const homeRoutes = require('./src/routes/homeRoute')
@@ -30,8 +30,8 @@ app.use('/owners', ownerRoutes)
 // customer routes - all urls with /customers
 app.use('/customers', customerRoutes)
 
-const connection = getdb()
-    .then((conn) => {
+initdb()
+    .then(() => {
         app.listen(process.env.PORT,  () => {
             console.log(`connected to database`)
             console.log(`server listening on port ${process.env.PORT}`);
