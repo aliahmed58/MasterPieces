@@ -16,22 +16,19 @@
         <!-- each row shall display 4 cards -->
         <% for( let row=0; row < 3; row++ ) { %>
             <div class="row">
-                <% for( let col=0; col < 4; col++ ) { %>
-                    <div class="col-sm-3">
-                        <div class="card shadow">
-                            <div class="card-header">
-                                Customer no: <%= 4 * row + col %> 
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">Customer Name: Sam Jackson</h5>
-                                <a href="/customers/report" class="btn">View Report</a>
-                                <a href="#" class="btn">Delete</a>
-                            </div>
-                        </div>
+                <div class="card shadow">
+                    <div class="card-header">
+                        Customer no:
                     </div>
-                    <% } %>
+                    <div class="card-body">
+                        <h5 class="card-title">Customer Name: Sam Jackson</h5>
+                        <a href="/customers/report" class="btn">View Report</a>
+                        <a href="#" class="btn">Delete</a>
+                    </div>
+                </div>
             </div>
             <% } %>
+
 
 </body>
 

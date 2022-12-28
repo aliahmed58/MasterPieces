@@ -12,24 +12,20 @@
 
 <body>
     <%- include('../partials/navbar') %>
-
         <!-- each row shall display 4 cards -->
-        <% for( let row=0; row < 3; row++ ) { %>
+        <% for( let row=0; row < data.length; row++ ) { %>
             <div class="row">
-                <% for( let col=0; col < 4; col++ ) { %>
-                    <div class="col-sm-3">
-                        <div class="card shadow">
-                            <div class="card-header">
-                                Owner no: <%= 4 * row + col %> 
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">Owner Name: Ahmed</h5>
-                                <a href="/owners/report" class="btn">View Report</a>
-                                <a href="#" class="btn">Delete</a>
-                            </div>
-                        </div>
+                <div class="card shadow">
+                    <div class="card-header">
+                        Owner no: <%= data[row][0] %>
                     </div>
-                    <% } %>
+                    <div class="card-body">
+                        <h5 class="card-title">Owner Name: <%= data[row][1] %>
+                        </h5>
+                        <a href="/owners/report" class="btn">View Report</a>
+                        <a href="#" class="btn">Delete</a>
+                    </div>
+                </div>
             </div>
             <% } %>
 

@@ -16,22 +16,20 @@
         <!-- each row shall display 4 cards -->
         <% for( let row=0; row < 3; row++ ) { %>
             <div class="row">
-                <% for( let col=0; col < 4; col++ ) { %>
-                    <div class="col-sm-3">
-                        <div class="card shadow rounded">
-                            <div class="card-header">
-                                Artist no: <%= 4 * row + col %> 
-                            </div>
-                            <div class="card-body">
-                                <h5 class="card-title">Artist Name: Sam Jackson</h5>
-                                <a href="/artists/report" class="btn">View Report</a>
-                                <a href="#" class="btn">Delete</a>
-                            </div>
+                <div class="col-sm-3">
+                    <div class="card shadow rounded">
+                        <div class="card-header">
+                            Artist no: <%= 4 * row + col %>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Artist Name: Sam Jackson</h5>
+                            <a href="/artists/report" class="btn">View Report</a>
+                            <a href="#" class="btn">Delete</a>
                         </div>
                     </div>
-                    <% } %>
-            </div>
-            <% } %>
+                </div>
+                <% } %>
+
 
 </body>
 

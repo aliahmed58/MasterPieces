@@ -3,6 +3,7 @@ require('dotenv').config();
 const express = require('express');
 const app = express();
 const initdb = require('./dbconfig');
+const bodyParser  = require('body-parser')
 
 // get routers from routes
 const homeRoutes = require('./src/routes/homeRoute')
@@ -12,6 +13,9 @@ const ownerRoutes = require('./src/routes/ownerRoutes')
 
 // set template engine to ejs
 app.set('view engine', 'ejs')
+
+// use body parser to read forms
+app.use(bodyParser.urlencoded({extended: true}))
 
 // set bootstrap as the css directory to use in template files
 app.use("/css", express.static(__dirname + "/node_modules/bootstrap/dist/css"))
