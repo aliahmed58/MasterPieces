@@ -14,7 +14,7 @@ const getArtistData = async (connection, artistID) => {
         [artistID]
     )
 
-    return result;
+    return result.rows[0];
 }
 
 // ----- Exported functions below -----
@@ -37,6 +37,7 @@ const listAllArtists = async (req, res) => {
     }
     finally {
         try {
+
             await connection.close();
             /*
             Result.rows has the following format
@@ -63,9 +64,8 @@ const generateReport = async (req, res) => {
     try {
         connection = await oracledb.getConnection();
 
-        console.log(req.params.artistID)
         // get artist data
-        result = await getArtistData(connection, req.params.artistID)
+        result = await getArtistData(connection, req.query.artistID)
     }
     catch (err) {
         console.log(err)

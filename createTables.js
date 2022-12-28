@@ -1,16 +1,16 @@
 const dropAllTables = async (connection) => {
     // drop all tables in the beginning 
-    await connection.execute('DROP TABLE OWNERS')
-    await connection.execute('DROP TABLE ARTISTS')
-    await connection.execute('DROP TABLE CATEGORY')
+    await connection.execute('DROP TABLE OWNERS');
+    await connection.execute('DROP TABLE ARTISTS');
+    await connection.execute('DROP TABLE CATEGORY');
 }
 
 const insertDefaultValues = async (connection) => {
     // insert values for cateogry table
-    await connection.execute(`INSERT INTO CATEGORY VALUES ('bronze', 0)`)
-    await connection.execute(`INSERT INTO CATEGORY VALUES ('silver', 0.05)`)
-    await connection.execute(`INSERT INTO CATEGORY VALUES ('gold', 0.1)`)
-    await connection.execute(`INSERT INTO CATEGORY VALUES ('platinum', 0.15)`)
+    await connection.execute(`INSERT INTO CATEGORY VALUES ('bronze', 0)`);
+    await connection.execute(`INSERT INTO CATEGORY VALUES ('silver', 0.05)`);
+    await connection.execute(`INSERT INTO CATEGORY VALUES ('gold', 0.1)`);
+    await connection.execute(`INSERT INTO CATEGORY VALUES ('platinum', 0.15)`);
 
 }
 
@@ -38,6 +38,7 @@ const createTables = async (connection) => {
             age NUMBER
         )`
     )
+
 
     // CREATE CATEOGRY TABLE
     await connection.execute(
