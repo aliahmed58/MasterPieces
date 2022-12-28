@@ -8,4 +8,9 @@ const generateReport = (req, res) => {
     res.render('../src/views/artists/ArtistReport')
 }
 
-module.exports = {listAllArtists, generateReport}
+// render form for new artist
+const renderForm = (req, res) => {
+    res.render('../src/views/artists/NewArtist')
+}
+
+module.exports = {listAllArtists, generateReport, renderForm}

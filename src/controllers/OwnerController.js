@@ -41,4 +41,9 @@ const generateReport = (req, res) => {
     res.render('../src/views/owners/OwnerReport', data)
 }
 
-module.exports = {listAllOwners, generateReport}
+// render input form
+const renderForm = (req, res) => {
+    res.render('../src/views/owners/NewOwner')
+}
+
+module.exports = {listAllOwners, generateReport, renderForm}

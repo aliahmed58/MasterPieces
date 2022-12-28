@@ -17,6 +17,7 @@ app.set('view engine', 'ejs')
 app.use("/css", express.static(__dirname + "/node_modules/bootstrap/dist/css"))
 app.use("/public", express.static(__dirname + "/src/public"))
 
+
 // use home routes
 app.use(homeRoutes)
 

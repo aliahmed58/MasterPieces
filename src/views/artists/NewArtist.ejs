@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/public/global.css" />
+    <link rel="stylesheet" href="/public/forms.css">
+    <title>Add Artist</title>
+</head>
+
+<body>
+
+    <%- include ('../partials/navbar') %>
+
+        <form>
+            <div class="container">
+                <div class="row">
+                    <div class="form-group col-sm-3">
+                        <label for="inputName">Artist Name</label>
+                        <input type="text" class="form-control" id="inputName" placeholder="Name">
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label for="inputCountry">Country of Birth</label>
+                        <input type="text" class="form-control" id="inputCountry" placeholder="Country of Birth">
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        
+                        <label for="inputDOB">Date of Birth</label>
+                        <input type="date" class="form-control" id="inputDOB">
+                    </div>
+                    <div class="form-group col-sm-3">
+                        <label for="inputDOB"></label>
+                        <input type="submit" class="submitbtn form-control" id="inputDOB">
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+</body>
+
+</html>

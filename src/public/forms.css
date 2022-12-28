@@ -1,0 +1,14 @@
+.container {
+    padding: 100px;
+}
+
+.submitbtn {
+    background-color: #0e2439;
+    color: white;
+}
+
+.submitbtn:hover {
+    transition: 0.3s all;
+    color: white;
+    background-color: #4799eb;
+}

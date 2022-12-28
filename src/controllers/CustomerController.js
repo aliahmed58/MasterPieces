@@ -7,4 +7,9 @@ const generateReport = (req, res) => {
     res.render('../src/views/customers/CustomerReport')
 }
 
-module.exports = {listAllCustomers, generateReport}
+// render input form
+const renderForm = (req, res) => {
+    res.render('../src/views/customers/NewCustomer')
+}
+
+module.exports = {listAllCustomers, generateReport, renderForm}
