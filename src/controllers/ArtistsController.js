@@ -66,8 +66,7 @@ const generateReport = async (req, res) => {
 
         // get artist data
         result = await getArtistData(connection, req.query.artistID)
-
-        console.log(result)
+        
     }
     catch (err) {
         console.log(err)
@@ -141,9 +140,43 @@ const processForm = async (req, res) => {
 
 }
 
+const deleteArtist = async (req, res) => {
+    let connection;
+    
+    try {
+        connection = await oracledb.getConnection()
+
+        let artistID = req.query.artistID;
+
+        let result = await connection.execute(
+            `BEGIN
+                delete_artist(:artistID);
+             END;
+             `,{
+                artistID: artistID
+             }
+             
+        )
+
+    }
+    catch (err) {
+        console.log(err)
+    }
+    finally {
+        try {
+            res.redirect('/artists')
+            await connection.close()
+        }   
+        catch(err) {
+            console.log(err.message)
+        }
+    }
+}
+
 module.exports = {
     listAllArtists,
     generateReport,
     renderForm,
-    processForm
+    processForm,
+    deleteArtist
 }

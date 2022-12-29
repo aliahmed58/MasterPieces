@@ -22,24 +22,24 @@
             <div class="container subcontainer card shadow rounded">
                 <div class="row info text-center">
                     <div class="col-sm">
-                        <span class="align-middle">Customer no.: 123193 </span>
+                        <span class="align-middle">Customer no.: <%= data[0] %>  </span>
                     </div>
                     <div class="col-sm">
-                        <span class="align-middle">Customer Name: Salman</span>
+                        <span class="align-middle">Customer Name: <%= data[1] %> <%= data[2] %> </span>
                     </div>
                     <div class="col-sm">
-                        <span class="align-middle">Customer Category: Lethal</span>
+                        <span class="align-middle">Customer Category: <%= category[1].charAt(0).toUpperCase() + category[1].slice(1) %> </span>
                     </div>
                     <div class="col-sm ">
-                        <span class="align-middle">Customer description: <br>boring stupid fuck</span>
+                        <span class="align-middle">Customer description: <br><%= data[7] %> </span>
                     </div>
                 </div>
                 <div class="row info text-center">
                     <div class="col-sm">
-                        <span class="align-middle">Customer Address: L215, Sector 5M, North Karachi</span>
+                        <span class="align-middle">Customer Address: <%= data[5] %>, <%= data[3] %>, <%= data[4] %>   </span>
                     </div>
                     <div class="col-sm">
-                        <span class="align-middle">Category Discount: 15%</span>
+                        <span class="align-middle">Category Discount: <%= category[2] * 100 %>% </span>
                     </div>
                 </div>
             </div>
@@ -47,8 +47,8 @@
 
         <hr>
 
-        <div class="contianer table-container shadow-lg">
-            <table class="table text-center table-bordered table-hover table-responsive">
+        <div class="contianer table-container">
+            <table class="table text-center table-bordered table-responsive">
                 <thead>
                     <tr>
                         <th scope="col">Painting no.</th>

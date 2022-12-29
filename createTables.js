@@ -10,10 +10,14 @@ const dropAllTables = async (connection) => {
 
 const insertDefaultValues = async (connection) => {
     // insert values for cateogry table
-    await connection.execute(`INSERT INTO CATEGORY VALUES ('B', 'bronze', 0)`);
-    await connection.execute(`INSERT INTO CATEGORY VALUES ('S', 'silver', 0.05)`);
-    await connection.execute(`INSERT INTO CATEGORY VALUES ('G', 'gold', 0.1)`);
-    await connection.execute(`INSERT INTO CATEGORY VALUES ('P', 'platinum', 0.15)`);
+    await connection.execute(
+        `BEGIN
+        INSERT INTO CATEGORY VALUES ('B', 'bronze', 0);
+        INSERT INTO CATEGORY VALUES ('S', 'silver', 0.05);
+        INSERT INTO CATEGORY VALUES ('G', 'gold', 0.1);
+        INSERT INTO CATEGORY VALUES ('P', 'platinum', 0.15);
+        COMMIT;
+        END;`);
 
 }
 
@@ -29,7 +33,8 @@ const createTables = async (connection) => {
             country varchar(20) NOT NULL,
             address varchar(100) NOT NULL,
             cellphone varchar(12) NOT NULL,
-            CONSTRAINT phone_check CHECK (length(cellphone) >= 10)
+            CONSTRAINT phone_check CHECK (length(cellphone) >= 10),
+            CONSTRAINT phone_max CHECK (length(cellphone) <= 10)
         )`
     )
 
@@ -101,6 +106,8 @@ const createTables = async (connection) => {
             CONSTRAINT fk_painting FOREIGN KEY(paintingID) REFERENCES PAINTINGS(paintingID) ON DELETE CASCADE
         )`
     )
+
+    await insertDefaultValues(connection);
 
 }
 

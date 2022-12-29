@@ -7,28 +7,25 @@
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/public/liststyles.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Customers</title>
+    <title>Paintings</title>
 </head>
 
 <body>
     <%- include('../partials/navbar') %>
-
         <!-- each row shall display 4 cards -->
         <% for( let row=0; row < data.length; row++ ) { %>
             <div class="row">
                 <div class="card shadow">
                     <div class="card-header">
-                        Customer no: <%= data[row][0] %> 
+                        Painting no: <%= data[row][0] %>
                     </div>
                     <div class="card-body">
-                        <h5 class="card-title">Customer Name: <%= data[row][1] %> <%= data[row][2] %>  </h5>
-                        <a href="/customers/report/?customerID=<%= data[row][0] %> " class="btn">View Report</a>
-                        <a href="/customers/delete?customerID=<%= data[row][0] %>" class="btn">Delete</a>
+                        <h5 class="card-title">Painting Name: <%= data[row][1] %>  </h5>
+                        <a href="/paintings/delete/?paintingID=<%= data[row][0] %> " class="btn">Delete</a>
                     </div>
                 </div>
             </div>
             <% } %>
-
 
 </body>
 

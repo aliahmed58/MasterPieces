@@ -24,7 +24,7 @@
                         <h5 class="card-title">Artist Name: <%= data[row][1] %>
                         </h5>
                         <a href="/artists/report/?artistID=<%=data[row][0] %>" class="btn">View Report</a>
-                        <a href="#" class="btn">Delete</a>
+                        <a href="/artists/delete/?artistID=<%= data[row][0] %>" class="btn">Delete</a>
                     </div>
                 </div>
             </div>

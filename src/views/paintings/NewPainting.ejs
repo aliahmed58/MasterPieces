@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/public/global.css" />
+    <link rel="stylesheet" href="/public/forms.css">
+    <title>Add Painting</title>
+</head>
+
+<body>
+
+    <%- include ('../partials/navbar') %>
+
+        <form action="/paintings/new" method="POST">
+            <div class="container">
+                <div class="row">
+                    <div class="form-group col-sm-4">
+                        <label for="inputName">Name</label>
+                        <input type="text" class="form-control" name="name" id="inputName" placeholder="Name">
+                    </div>
+                    <div class="form-group col-sm-4">
+                        <label for="inputName">Monthly Rental</label>
+                        <input type="number" class="form-control" name="rental" id="inputName" placeholder="Monthly Rental">
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                        <label for="inputName">Theme</label>
+                        <input type="text" class="form-control" name="theme" id="inputName" placeholder="City">
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                        <label for="inputName">Artist</label>
+                        <select class="form-control" name="artists" id="category">
+                            <option value="" selected disabled hidden>Choose here</option>
+                            <% for( let index = 0; index < artists.length; index++ ) { %>
+                                <option value="<%= artists[index][0] %>"><%= artists[index][0] %> - <%= artists[index][1] %> <%= artists[index][2] %>  </option>
+                            <% } %>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                        <label for="inputCountry">Owner</label>
+                        <select class="form-control" name="owners" id="category">
+                            <option value="" selected disabled hidden>Choose here</option>
+                            <% for( let index = 0; index < owners.length; index++ ) { %>
+                                <option value="<%= owners[index][0] %>"><%= owners[index][0] %> - <%= owners[index][1] %> <%= owners[index][2] %>  </option>
+                            <% } %>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                        <label for="submitbtn"></label>
+                        <input type="submit" class="submitbtn form-control" id="submitbtn">
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+</body>
+
+</html>

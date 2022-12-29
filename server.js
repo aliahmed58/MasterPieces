@@ -10,6 +10,7 @@ const homeRoutes = require('./src/routes/homeRoute')
 const artistRoutes = require('./src/routes/artistRoutes')
 const customerRoutes = require('./src/routes/customerRoutes')
 const ownerRoutes = require('./src/routes/ownerRoutes')
+const paintingRoutes = require('./src/routes/paintingRoutes')
 
 // set template engine to ejs
 app.set('view engine', 'ejs')
@@ -33,6 +34,9 @@ app.use('/owners', ownerRoutes)
 
 // customer routes - all urls with /customers
 app.use('/customers', customerRoutes)
+
+// painting routes - all urls with /paintings
+app.use('/paintings', paintingRoutes)
 
 initdb()
     .then(() => {

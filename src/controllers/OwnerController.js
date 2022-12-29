@@ -20,16 +20,7 @@ const listAllOwners = async (req, res) => {
         try {
             await connection.close();
 
-            /*
-            Result.rows has the following format
-                Example: rows = [ [ 1, 'Kashif', 'London' ] ]
-                for row in rows:
-                    0: id
-                    1: name
-                    2: address
-            */
-
-            res.render('../src/views/owners/AllOwners', {data: result.rows})
+            res.render('../src/views/owners/AllOwners', { data: result.rows })
         }
         catch (err) {
             console.log(err)
@@ -38,8 +29,39 @@ const listAllOwners = async (req, res) => {
 }
 
 // generates report for the given owner id
-const generateReport = (req, res) => {
-    res.render('../src/views/owners/OwnerReport', data)
+const generateReport = async (req, res) => {
+
+    // get owner info first
+    let connection;
+    let ownerInfo;
+
+    const ownerID = req.query.ownerID;
+
+    try {
+        connection = await oracledb.getConnection();
+
+        ownerInfo = await connection.execute(
+            `SELECT * FROM OWNERS where ownerID = :id`, [ownerID]
+        );
+
+    }
+    catch (err) {
+
+        console.log(err);
+    }
+    finally {
+        try {
+
+            res.render('../src/views/owners/OwnerReport', { data: ownerInfo.rows[0] })
+
+            await connection.close()
+        }
+        catch (err) {
+            console.log(err.message)
+        }
+    }
+
+
 }
 
 // render input form 
@@ -52,8 +74,8 @@ const processForm = async (req, res) => {
 
     let connection;
 
-    let name = req.body.name;
-    let address = req.body.address;
+    let { firstname, lastname, city, country, address, cellphone } = req.body;
+
 
     try {
 
@@ -61,12 +83,16 @@ const processForm = async (req, res) => {
         // call insert procedure by passing name and address
         await connection.execute(
             `BEGIN
-                insert_owner(:owner_name, :owner_address);
+                insert_owner(:firstname, :lastname, :city, :country, :address, :cellphone);
             END;
             `,
             {
-                owner_name: name,
-                owner_address: address
+                firstname: firstname,
+                lastname: lastname,
+                city: city,
+                country: country,
+                address: address,
+                cellphone: cellphone
             }
         )
     }
@@ -87,9 +113,43 @@ const processForm = async (req, res) => {
 
 }
 
+const deleteOwner = async (req, res) => {
+
+    let connection;
+    const ownerID = req.query.ownerID;
+
+    try {
+        connection = await oracledb.getConnection();
+
+        await connection.execute(
+            `BEGIN
+                delete_owner(:id);
+            END;`, {id: ownerID}
+        );
+
+
+    }
+    catch (err) {
+
+        console.log(err);
+    }
+    finally {
+        try {
+
+            res.redirect('/owners')
+
+            await connection.close()
+        }
+        catch (err) {
+            console.log(err.message)
+        }
+    }
+}
+
 module.exports = {
     listAllOwners,
     generateReport,
     renderForm,
-    processForm
+    processForm,
+    deleteOwner
 }

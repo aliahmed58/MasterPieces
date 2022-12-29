@@ -22,15 +22,15 @@
             <div class="container subcontainer card shadow rounded">
                 <div class="row info text-center">
                     <div class="col-sm">
-                        <span class="align-middle">Owner number: <%= data.info.id %>  </span>
+                        <span class="align-middle">Owner number: <%= data[0] %>  </span>
                     </div>
                     <div class="col-sm">
-                        <span class="align-middle">Owner Name: <%= data.info.name %> </span>
+                        <span class="align-middle">Owner Name: <%= data[1] %> <%= data[2] %>  </span>
                     </div>
                 </div>
                 <div class="row info text-center">
                     <div class="col-sm">
-                        <span class="align-middle">Customer Address: <%= data.info.address %> </span>
+                        <span class="align-middle">Customer Address: <%= data[5] %>, <%= data[3] %>, <%= data[4] %>   </span>
                     </div>
                 </div>
             </div>
@@ -50,11 +50,11 @@
 
                 <tbody>
                     <!-- use for loop to fill the table -->
-                    <% for( let i=0; i < data.report_info.length; i++ ) { %>
+                    <% for( let i=0; i < 10; i++ ) { %>
                         <tr>
-                            <th scope="row"><%= data.report_info[i].painting_no %> </th>
-                            <td><%= data.report_info[i].painting_title %> </td>
-                            <td><%= data.report_info[i].return_date %> </td>
+                            <th scope="row"></th>
+                            <td> </td>
+                            <td></td>
                         </tr>
 
                         <% } %>

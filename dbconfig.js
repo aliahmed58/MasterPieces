@@ -5,6 +5,7 @@ const {createTables, dropAllTables, insertDefaultValues} = require('./createTabl
 const createArtistProcedures = require('./src/database/artistProcedures');
 const createCustomerProcedures = require('./src/database/customerProcedures');
 const createOwnerProcedures = require('./src/database/ownerProcedures');
+const createPaintingProcedures = require('./src/database/paintingProcedures');
 
 const initdb = async () => {
 
@@ -42,6 +43,9 @@ const initdb = async () => {
 
         // create customer procedures
         await createCustomerProcedures(connection)
+
+        // create painting procedures
+        await createPaintingProcedures(connection)
 
     }
     catch (err) {
