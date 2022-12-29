@@ -1,8 +1,9 @@
 require('dotenv').config()
 const oracledb = require('oracledb');
 
-const createTables = require('./createTables');
+const {createTables, dropAllTables, insertDefaultValues} = require('./createTables');
 const createArtistProcedures = require('./src/database/artistProcedures');
+const createCustomerProcedures = require('./src/database/customerProcedures');
 const createOwnerProcedures = require('./src/database/ownerProcedures');
 
 const initdb = async () => {
@@ -23,8 +24,13 @@ const initdb = async () => {
         // create tables needed for database
         connection = await oracledb.getConnection();
 
-        // Create tables 
-        await createTables(connection);
+        if (process.env.INIT_TABLES == 1) {
+            console.log('INIT')
+            // await dropAllTables(connection)
+            // Create tables 
+            await createTables(connection);
+        }
+        
 
         // CREATE PROCEDURES
 
@@ -33,6 +39,9 @@ const initdb = async () => {
 
         // create artist procedures
         await createArtistProcedures(connection)
+
+        // create customer procedures
+        await createCustomerProcedures(connection)
 
     }
     catch (err) {

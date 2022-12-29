@@ -35,4 +35,46 @@ const renderForm = async (req, res) => {
     }
 }
 
-module.exports = {listAllCustomers, generateReport, renderForm}
+const processForm =  async (req, res) => {
+
+    let connection; 
+    let name = req.body.name;
+    let address = req.body.address;
+    let description = req.body.description;
+    let category = req.body.category;
+
+    try {
+        connection = await oracledb.getConnection();
+
+        await connection.execute(
+            `BEGIN
+                insert_customer(:name, :address, :description, :category);
+            END;`,
+            {
+                name: name, address: address, description: description, category: category
+            }
+        )
+    }
+    catch(err) {
+        console.log(err)
+    }
+    finally {
+        try {
+            res.redirect('/');
+
+            await connection.close()
+
+        }
+        catch(err) {
+            console.log(err)
+        }
+    }
+
+}
+
+module.exports = {
+    listAllCustomers, 
+    generateReport, 
+    renderForm,
+    processForm
+}

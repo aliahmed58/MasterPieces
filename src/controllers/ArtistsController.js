@@ -66,6 +66,8 @@ const generateReport = async (req, res) => {
 
         // get artist data
         result = await getArtistData(connection, req.query.artistID)
+
+        console.log(result)
     }
     catch (err) {
         console.log(err)
@@ -73,8 +75,7 @@ const generateReport = async (req, res) => {
 
     finally {
         try {
-            console.log(result)
-
+            
             res.render('../src/views/artists/ArtistReport', {data: result})       
              
             // close db connection
@@ -97,12 +98,13 @@ const renderForm = (req, res) => {
 const processForm = async (req, res) => {
 
     let connection;
-
-    let name = req.body.name;
-    let country = req.body.country;
-    let dob = req.body.dob;
+    let {firstname, lastname, country, dob, dod} = req.body;
 
     dob = convertDate(dob)
+    
+    if (dod === '') dod = null;
+    else dod = convertDate(dod)
+
 
     try {
 
@@ -110,13 +112,15 @@ const processForm = async (req, res) => {
         // call insert procedure by passing name and address
         await connection.execute(
             `BEGIN
-                insert_artist (:a_name, :a_country, :a_dob);
+                insert_artist (:fname, :lname, :country, :dob, :dod);
             END;
             `,
             {
-                a_name: name,
-                a_country: country,
-                a_dob: dob
+                fname: firstname,
+                lname: lastname,
+                country: country,
+                dob: dob, 
+                dod: dod
             }
         )
     }

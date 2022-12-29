@@ -25,21 +25,25 @@
                         <span class="align-middle">Artist no.: <%= data[0]  %>  </span>
                     </div>
                     <div class="col-sm">
-                        <span class="align-middle">Year of birth: <%= data[3] %> </span>
+                        <span class="align-middle">Year of birth: <%= String(data[4]).slice(11, 15) %> </span>
                     </div>
                     <div class="col-sm">
-                        <span class="align-middle">Age: <%= data[4] %> </span>
+                        <span class="align-middle">Age: <%= data[7] %> </span>
                     </div>
                 </div>
                 <div class="row info text-center">
                     <div class="col-sm ">
-                        <span class="align-middle">Artist Name: <%= data[1] %>  </span>
+                        <span class="align-middle">Artist Name: <%= data[1] %> <%= data[2] %>   </span>
                     </div>
                     <div class="col-sm">
-                        <span class="align-middle">Year of death: 2058</span>
+                        <% if (data[5] !== null) { %>
+                            <span class="align-middle">Year of death: <%= String(data[5]).slice(11, 15) %> </span>
+                        <% } else { %>
+                            <span class="align-middle">Year of death: (alive)</span>
+                        <% } %>
                     </div>
                     <div class="col-sm">
-                        <span class="align-middle">Country of birth: <%= data[2] %> </span>
+                        <span class="align-middle">Country of birth: <%= data[3] %> </span>
                     </div>
                 </div>
             </div>
