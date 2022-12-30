@@ -16,6 +16,7 @@ const insertCustomerProcedure = async (connection) => {
     )
 }
 
+// procedure to delete a customer given its id
 const deleteCustomerProcedure = async (connection) => {
     await connection.execute(
         `CREATE OR REPLACE PROCEDURE delete_customer(id number) AS
@@ -26,11 +27,35 @@ const deleteCustomerProcedure = async (connection) => {
     )
 }
 
+// procedure to generate customer report
+const generateReportProcedure = async (connection) => {
+    await connection.execute(
+        `CREATE OR REPLACE PROCEDURE get_customer_report (
+            id IN NUMBER, records OUT SYS_REFCURSOR
+        ) AS
+        BEGIN
+            OPEN records FOR
+            SELECT 
+            
+            C.customerID, C.first_name, C.last_name, C.city, C.country, C.address, C.description,
+            L.categoryname, L.discount,
+            P.paintingID, P.name, P.theme, R.RENT_DATE, R.due_date, R.returned
+
+            FROM RENTED R 
+                INNER JOIN PAINTINGS P ON R.paintingID = P.paintingID
+                INNER JOIN CUSTOMERS C ON C.customerID = R.customerID
+                INNER JOIN CATEGORY L ON C.categoryID = L.categoryID
+                WHERE C.customerID = id;
+        END;`
+    )
+}
+
 
 // create all procedures related to customers
 const createCustomerProcedures = async (connection) => {
     await insertCustomerProcedure(connection);
     await deleteCustomerProcedure(connection);
+    await generateReportProcedure(connection);
 }
 
 module.exports = createCustomerProcedures

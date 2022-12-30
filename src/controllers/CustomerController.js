@@ -34,8 +34,7 @@ const listAllCustomers = async (req, res) => {
 const generateReport = async (req, res) => {
 
     let connection;
-    let result;
-    let category;
+    let data = [];
 
     const customerID = req.query.customerID;
 
@@ -43,21 +42,55 @@ const generateReport = async (req, res) => {
 
         connection = await oracledb.getConnection();
 
-        result = await connection.execute(
-            `SELECT * FROM CUSTOMERS WHERE customerID = :id`, [customerID]
-        );
+        /*
+        * Cursor from get_customer_report contains data in the following indexes:
+        * 0: Customer ID
+        * 1: First Name
+        * 2: Last Name
+        * 3: City
+        * 4: Country 
+        * 5: Address
+        * 6: Description
+        * 7: Category
+        * 8: Discount
+        * 9: Painting ID
+        * 10: Painting Name
+        * 11: Painting Theme
+        * 12: Rent Date
+        * 13: Due Date
+        * 14: Returned (1/0)
+        */
+        let records = await connection.execute(
+            `BEGIN
+                get_customer_report(:id, :cursor);
+            END;`, {
+                id: customerID, 
+                cursor : {
+                    type: oracledb.CURSOR,
+                    dir: oracledb.BIND_OUT
+                }
+            }
+        )
 
-        category = await connection.execute(
-            `SELECT * FROM CATEGORY WHERE categoryID = :id`, [result.rows[0][6]]
-        );
+        const cursor = records.outBinds.cursor;
+        const queryStream = cursor.toQueryStream();
 
+        const consumeStream = new Promise((resolve, reject) => {
+            queryStream.on('data', function (row) {
+                data.push(row)
+            });
+            queryStream.on('error', reject);
+            queryStream.on('close', resolve);
+        });
+
+        await consumeStream;
     }
     catch (err) {
         console.log(err);
     }
     finally {
         try {
-            res.render('../src/views/customers/CustomerReport', { data: result.rows[0], category: category.rows[0] })
+            res.render('../src/views/customers/CustomerReport', { data: data })
             await connection.close()
         }
         catch (err) {

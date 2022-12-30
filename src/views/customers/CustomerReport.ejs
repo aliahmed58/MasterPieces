@@ -22,24 +22,27 @@
             <div class="container subcontainer card shadow rounded">
                 <div class="row info text-center">
                     <div class="col-sm">
-                        <span class="align-middle">Customer no.: <%= data[0] %>  </span>
+                        <span class="align-middle">Customer no.: <%= data[0][0] %>  </span>
                     </div>
                     <div class="col-sm">
-                        <span class="align-middle">Customer Name: <%= data[1] %> <%= data[2] %> </span>
+                        <span class="align-middle">Customer Name: <%= data[0][1] %> <%= data[0][2] %> </span>
                     </div>
                     <div class="col-sm">
-                        <span class="align-middle">Customer Category: <%= category[1].charAt(0).toUpperCase() + category[1].slice(1) %> </span>
+                        <span class="align-middle">Customer Category: <%= data[0][7].charAt(0).toUpperCase() + data[0][7].slice(1) %> </span>
                     </div>
-                    <div class="col-sm ">
-                        <span class="align-middle">Customer description: <br><%= data[7] %> </span>
+                    
+                    <div class="col-sm">
+                        <span class="align-middle">Category Discount: <%= data[0][8] * 100 %>% </span>
                     </div>
+                   
                 </div>
                 <div class="row info text-center">
                     <div class="col-sm">
-                        <span class="align-middle">Customer Address: <%= data[5] %>, <%= data[3] %>, <%= data[4] %>   </span>
+                        <span class="align-middle">Customer Address: <%= data[0][5] %>, <%= data[0][3] %>, <%= data[0][4] %>   </span>
                     </div>
-                    <div class="col-sm">
-                        <span class="align-middle">Category Discount: <%= category[2] * 100 %>% </span>
+
+                    <div class="col-sm ">
+                        <span class="align-middle">Customer description: <%= data[0][6] %> </span>
                     </div>
                 </div>
             </div>
@@ -63,23 +66,33 @@
 
                 <tbody>
                     <!-- use for loop to fill the table -->
-                    <% for( let i=0; i < 10; i++ ) { %>
-
-
-                        <tr>
-                            <th scope="row">
-                                <%= i %>
-                            </th>
-                            <td>Caprice de puta</td>
-                            <td>Puta</td>
+                    <% for( let i=0; i < data.length; i++ ) { %>
+                        <tr >
+                            <td scope="row">
+                                <%= data[i][9] %>
+                            </td>
+                            <td><%= data[i][10] %> </td>
+                            <td><%= data[i][11] %> </td>
                             <td>
-                                20-10-22
+                                <%= String(data[i][12]).slice(0, 16) %> 
                             </td>
                             <td>
-                                20-12-23
+                                <%= String(data[i][13]).slice(0, 16) %> 
                             </td>
-                            <td>N</td>
-                            <td><a href="#" class="btn disabled">Return</a></td>
+                            <td>
+                                <% if (data[i][14] == 1) { %>
+                                    Y
+                                <% } else { %>
+                                    N
+                                <% } %> 
+                            </td>
+                            <td>
+                                <% if (data[i][14] == 1) { %>
+                                    <a href="#" class="btn disabled">Return</a>
+                                <% } else { %>
+                                    <a href="#" class="btn">Return</a>
+                                <% } %>
+                            </td>
                         </tr>
 
                         <% } %>
