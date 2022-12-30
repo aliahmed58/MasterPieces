@@ -19,6 +19,15 @@ const insertDefaultValues = async (connection) => {
         COMMIT;
         END;`);
 
+    await connection.execute(
+        `BEGIN
+            INSERT INTO STATUS VALUES ('returned');
+            INSERT INTO STATUS VALUES ('hired');
+            INSERT INTO STATUS VALUES ('available');
+        COMMIT;
+        END;`
+    )
+
 }
 
 const createTables = async (connection) => {
@@ -52,6 +61,13 @@ const createTables = async (connection) => {
         )`
     )
 
+    // CREATE STATUS TABLE
+    await connection.execute(
+        `CREATE TABLE STATUS (
+            status_id VARCHAR(20) PRIMARY KEY
+        )`
+    )
+
     // CREATE PAINTING TABLE
     await connection.execute(
         `CREATE TABLE PAINTINGS(
@@ -61,8 +77,10 @@ const createTables = async (connection) => {
             theme varchar(20) NOT NULL,
             artistID NUMBER NOT NULL,
             ownerID NUMBER NOT NULL,
+            status VARCHAR(20) DEFAULT 'available' NOT NULL,
             CONSTRAINT fk_artist FOREIGN KEY (artistID) REFERENCES ARTISTS(artistID) ON DELETE CASCADE,
-            CONSTRAINT fk_owner FOREIGN KEY (ownerID) REFERENCES OWNERS(ownerID) ON DELETE CASCADE
+            CONSTRAINT fk_owner FOREIGN KEY (ownerID) REFERENCES OWNERS(ownerID) ON DELETE CASCADE,
+            CONSTRAINT fk_status FOREIGN KEY (status) REFERENCES STATUS(status_id)
         )`
     )
 
@@ -98,8 +116,8 @@ const createTables = async (connection) => {
             rentID NUMBER generated always as identity PRIMARY KEY, 
             rent_date DATE NOT NULL,
             due_date DATE NOT NULL, 
-            returned NUMBER(1) NOT NULL,
-            return_date DATE NOT NULL,
+            returned NUMBER(1) DEFAULT 0 NOT NULL,
+            return_date DATE,
             customerID NUMBER NOT NULL,
             paintingID NUMBER NOT NULL,
             CONSTRAINT fk_customer FOREIGN KEY(customerID) REFERENCES CUSTOMERS(customerID) ON DELETE CASCADE,

@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/public/global.css" />
+    <link rel="stylesheet" href="/public/forms.css">
+    <title>Add Painting</title>
+</head>
+
+<body>
+
+    <%- include ('../partials/navbar') %>
+
+        <form action="/paintings/hire" method="POST">
+            <div class="container">
+                <div class="row">
+                    <div class="form-group col-sm-4">
+                        <label for="inputName">Painting</label>
+                        <select required class="form-control" name="artistID" id="category">
+                            <option value="" selected disabled hidden>Choose here</option>
+                            <% for( let index = 0; index < data.length; index++ ) { %>
+                                <option value=<%= data[index][0] %>>
+                                    <%= data[index][0] %> - <%= data[index][1] %> - (<%= data[index][2] %>$ / mo)  
+                                </option>
+                            <% } %>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                        <label for="inputName">Customers</label>
+                        <select required class="form-control" name="customerID" id="category">
+                            <option value="" selected disabled hidden>Choose here</option>
+                            <% for( let index = 0; index < customers.length; index++ ) { %>
+                                <option value=<%= customers[index][0] %>>
+                                    <%= customers[index][0] %> - <%= customers[index][1] %> <%= customers[index][2] %>  
+                                </option>
+                            <% } %>
+                        </select>
+                    </div>
+
+
+                    <div class="form-group col-sm-4">
+                        <label for="inputName">Rent Date</label>
+                        <input type="date" required class="form-control" name="rentdate" id="inputName" placeholder="Name">
+                    </div>
+
+                    <div class="form-group col-sm-4">
+                        <label for="inputName">Due Date</label>
+                        <input type="date" required class="form-control" name="duedate" id="inputName" placeholder="Name">
+                    </div>
+
+                   
+                    <div class="col-sm-4"></div>
+
+                    <div class="form-group col-sm-4">
+                        <label for="submitbtn"></label>
+                        <input type="submit" class="submitbtn form-control" id="submitbtn">
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+</body>
+
+</html>

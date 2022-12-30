@@ -26,6 +26,7 @@ const deleteCustomerProcedure = async (connection) => {
     )
 }
 
+
 // create all procedures related to customers
 const createCustomerProcedures = async (connection) => {
     await insertCustomerProcedure(connection);

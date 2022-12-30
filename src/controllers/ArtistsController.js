@@ -1,21 +1,5 @@
-const {convertDate} = require('../../helper')
+const { convertDate } = require('../../helper')
 const oracledb = require('oracledb')
-
-/*
- ******** Helper functions below ********
- * Fetching data from database 
- * Storing data in database
-*/
-
-const getArtistData = async (connection, artistID) => {
-    const result = await connection.execute(
-        `SELECT * FROM ARTISTS 
-        WHERE ARTISTID = :artistID`,
-        [artistID]
-    )
-
-    return result.rows[0];
-}
 
 // ----- Exported functions below -----
 
@@ -47,7 +31,7 @@ const listAllArtists = async (req, res) => {
                     1: name
                     2: address
             */
-            res.render('../src/views/artists/AllArtists', {data: result.rows})
+            res.render('../src/views/artists/AllArtists', { data: result.rows })
         }
         catch (err) {
             console.log(err)
@@ -61,12 +45,57 @@ const generateReport = async (req, res) => {
     let connection;
     let result;
 
+    let data = [];
+
     try {
         connection = await oracledb.getConnection();
+        // fetch relevant data using the procedure
+        /*
+        * DATA Retruned as an array, the following indexes represent respective values:
+        * 0: Artist ID
+        * 1: Artist First name
+        * 2: Artist Last name
+        * 3: Artist dob
+        * 4: Artist age
+        * 5: Artist Death date
+        * 6: Artist Country
+        * 7: Painting ID
+        * 8: Painting Name
+        * 9: Painting theme
+        * 10: Monthly Renal
+        * 11: Owner ID
+        * 12: Owner First Name
+        * 13: Owner Last Name
+        * 14: Owner cellphone
+        */
 
-        // get artist data
-        result = await getArtistData(connection, req.query.artistID)
-        
+        let records = await connection.execute(
+            `BEGIN
+                get_artist_report(:id, :cursor);
+            END;`,
+            {
+                id: req.query.artistID,
+                cursor: {
+                    type: oracledb.CURSOR,
+                    dir: oracledb.BIND_OUT
+                }
+            }
+        )
+
+        const cursor = records.outBinds.cursor;
+        const queryStream = cursor.toQueryStream();
+
+        const consumeStream = new Promise((resolve, reject) => {
+            queryStream.on('data', function (row) {
+                data.push(row)
+            });
+            queryStream.on('error', reject);
+            queryStream.on('close', resolve);
+        });
+
+        await consumeStream;
+
+
     }
     catch (err) {
         console.log(err)
@@ -74,9 +103,9 @@ const generateReport = async (req, res) => {
 
     finally {
         try {
-            
-            res.render('../src/views/artists/ArtistReport', {data: result})       
-             
+
+            res.render('../src/views/artists/ArtistReport', { data: data })
+
             // close db connection
             await connection.close()
         }
@@ -97,10 +126,10 @@ const renderForm = (req, res) => {
 const processForm = async (req, res) => {
 
     let connection;
-    let {firstname, lastname, country, dob, dod} = req.body;
+    let { firstname, lastname, country, dob, dod } = req.body;
 
     dob = convertDate(dob)
-    
+
     if (dod === '') dod = null;
     else dod = convertDate(dod)
 
@@ -118,7 +147,7 @@ const processForm = async (req, res) => {
                 fname: firstname,
                 lname: lastname,
                 country: country,
-                dob: dob, 
+                dob: dob,
                 dod: dod
             }
         )
@@ -142,7 +171,7 @@ const processForm = async (req, res) => {
 
 const deleteArtist = async (req, res) => {
     let connection;
-    
+
     try {
         connection = await oracledb.getConnection()
 
@@ -152,10 +181,10 @@ const deleteArtist = async (req, res) => {
             `BEGIN
                 delete_artist(:artistID);
              END;
-             `,{
-                artistID: artistID
-             }
-             
+             `, {
+            artistID: artistID
+        }
+
         )
 
     }
@@ -166,17 +195,18 @@ const deleteArtist = async (req, res) => {
         try {
             res.redirect('/artists')
             await connection.close()
-        }   
-        catch(err) {
+        }
+        catch (err) {
             console.log(err.message)
         }
     }
 }
+
 
 module.exports = {
     listAllArtists,
     generateReport,
     renderForm,
     processForm,
-    deleteArtist
+    deleteArtist,
 }

@@ -57,3 +57,12 @@ table.table-bordered > tbody > tr > td{
     border:1px solid #0e2439;
 }
 
+.btn {
+    background-color: #0e2439;
+    color: white;
+}
+
+.btn:hover {
+    color: white;
+    background-color: #4799eb;
+}

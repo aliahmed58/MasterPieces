@@ -20,21 +20,21 @@
                 <div class="row">
                     <div class="form-group col-sm-4">
                         <label for="inputName">Name</label>
-                        <input type="text" class="form-control" name="name" id="inputName" placeholder="Name">
+                        <input type="text" required class="form-control" name="name" id="inputName" placeholder="Name">
                     </div>
                     <div class="form-group col-sm-4">
                         <label for="inputName">Monthly Rental</label>
-                        <input type="number" class="form-control" name="rental" id="inputName" placeholder="Monthly Rental">
+                        <input type="number" required min="0" step=".01" pattern="^\d*(\.\d{0,2})?$"  class="form-control" name="rental" id="inputName" placeholder="Monthly Rental">
                     </div>
 
                     <div class="form-group col-sm-4">
                         <label for="inputName">Theme</label>
-                        <input type="text" class="form-control" name="theme" id="inputName" placeholder="City">
+                        <input type="text" required class="form-control" name="theme" id="inputName" placeholder="Theme">
                     </div>
 
                     <div class="form-group col-sm-4">
                         <label for="inputName">Artist</label>
-                        <select class="form-control" name="artists" id="category">
+                        <select required class="form-control" name="artists" id="category">
                             <option value="" selected disabled hidden>Choose here</option>
                             <% for( let index = 0; index < artists.length; index++ ) { %>
                                 <option value="<%= artists[index][0] %>"><%= artists[index][0] %> - <%= artists[index][1] %> <%= artists[index][2] %>  </option>
@@ -44,7 +44,7 @@
 
                     <div class="form-group col-sm-4">
                         <label for="inputCountry">Owner</label>
-                        <select class="form-control" name="owners" id="category">
+                        <select required class="form-control" name="owners" id="category">
                             <option value="" selected disabled hidden>Choose here</option>
                             <% for( let index = 0; index < owners.length; index++ ) { %>
                                 <option value="<%= owners[index][0] %>"><%= owners[index][0] %> - <%= owners[index][1] %> <%= owners[index][2] %>  </option>

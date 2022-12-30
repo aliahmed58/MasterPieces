@@ -1,4 +1,5 @@
-const oracledb = require('oracledb')
+const oracledb = require('oracledb');
+const { convertDate } = require('../../helper');
 
 // list all paintings
 const listAllPaintings = async (req, res) => {
@@ -126,9 +127,108 @@ const deletePainting = async (req, res) => {
     }
 }
 
+const hirePainting = async (req, res) => {
+    let connection;
+
+    let result;
+    let data = [];
+    let customers;
+
+    try {
+        connection = await oracledb.getConnection();
+
+        result = await connection.execute(
+            `BEGIN
+                get_available_paintings(:cursor);
+            END;`,
+            {
+                cursor: {
+                    type: oracledb.CURSOR, 
+                    dir: oracledb.BIND_OUT
+                }
+            }
+        )
+
+        customers = await connection.execute(
+            `SELECT customerID, first_name, last_name FROM CUSTOMERS`
+        );
+
+        const cursor = result.outBinds.cursor;
+        const queryStream = cursor.toQueryStream();
+
+        const consumeStream = new Promise((resolve, reject) => {
+            queryStream.on('data', function (row) {
+                data.push(row)
+            });
+            queryStream.on('error', reject);
+            queryStream.on('close', resolve);
+        });
+
+        await consumeStream;
+
+    }
+    catch (err) {
+
+        console.log(err);
+    }
+    finally {
+        try {
+            res.render('../src/views/paintings/HirePainting', {data: data, customers: customers.rows});
+
+            await connection.close()
+        }
+        catch (err) {
+            console.log(err.message)
+        }
+    }
+}
+
+const processHirePainting = async (req, res) => {
+    
+    let {rentdate, duedate, artistID, customerID} = req.body;
+
+    // convert dates to ORACLE format
+    rentdate = convertDate(rentdate);
+    duedate = convertDate(duedate);
+
+    let connection;
+
+    try {
+        connection = await oracledb.getConnection();
+
+        await connection.execute(
+            `BEGIN
+                rent_painting(:rentdate, :duedate, :customerID, :artistID);
+            END;`,
+            {
+                rentdate: rentdate, duedate: duedate, customerID: customerID, artistID: artistID
+            }
+        )
+       
+    }
+    catch (err) {
+
+        console.log(err);
+    }
+    finally {
+        try {
+
+            res.redirect('/')
+
+            await connection.close()
+        }
+        catch (err) {
+            console.log(err.message)
+        }
+    }
+}
+
+
 module.exports = {
     renderForm,
     processForm,
     listAllPaintings,
-    deletePainting
+    deletePainting,
+    hirePainting, 
+    processHirePainting
 }
