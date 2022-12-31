@@ -9,7 +9,7 @@ const listAllArtists = async (req, res) => {
     let result;
 
     try {
-        connection = await oracledb.getConnection();
+        connection = await oracledb.getConnection("main");
 
         result = await connection.execute(
             `SELECT * FROM ARTISTS`
