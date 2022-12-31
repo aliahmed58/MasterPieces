@@ -12,7 +12,6 @@ const dropTableIfExists = async (connection, table_name) => {
           END IF;
         END;`
     )
-
     await connection.execute(
         `BEGIN
             EXECUTE IMMEDIATE 'DROP TABLE ' || :table_name;
