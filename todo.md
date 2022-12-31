@@ -6,3 +6,5 @@
 - [x] Set phone number length to 11 than 10
 - [x] Monthly rental increase value limit
 - [ ] rename phone_check constraint to something more understandable
+- [x] host it on heroku
+- [ ] date of death greater than or equal to today

@@ -1,8 +1,4 @@
 const generatePrimaryKeyTrigger = async (connection) => {
-    // create sequence
-    await connection.execute(
-        `CREATE SEQUENCE pk_sequence`
-    )
 
     await connection.execute(
         `CREATE OR REPLACE TRIGGER on_rent_insert

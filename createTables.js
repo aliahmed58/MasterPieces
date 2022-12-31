@@ -62,6 +62,10 @@ const createTables = async (connection) => {
     // DROP ALL TABLES IN THE START (FOR TESTING ONLY)
     await dropAllTablesIfExist(connection);
 
+    await connection.execute(
+        `CREATE SEQUENCE pk_sequence`
+    )
+
     // CREATE OWNER TABLE
     await connection.execute(
         `CREATE TABLE OWNERS (
