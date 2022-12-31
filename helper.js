@@ -21,7 +21,6 @@ const convertDate = (date) =>{
     let oracle_day = day
 
     let oracle_date = `${oracle_day}-${oracle_month}-${oracle_year}`
-
     return oracle_date
 }
 
