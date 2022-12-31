@@ -1,5 +1,18 @@
 // drop a table if it exists SQL 
 const dropTableIfExists = async (connection, table_name) => {
+
+    // drop the pk sequence if exists
+    await connection.execute(
+        `BEGIN
+            EXECUTE IMMEDIATE 'DROP SEQUENCE pk_sequence';
+        EXCEPTION
+            WHEN OTHERS THEN
+            IF SQLCODE != -2289 THEN
+                RAISE;
+          END IF;
+        END;`
+    )
+
     await connection.execute(
         `BEGIN
             EXECUTE IMMEDIATE 'DROP TABLE ' || :table_name;
@@ -53,22 +66,22 @@ const createTables = async (connection) => {
     // CREATE OWNER TABLE
     await connection.execute(
         `CREATE TABLE OWNERS (
-            ownerID number generated always as identity PRIMARY KEY,
+            ownerID NUMBER PRIMARY KEY,
             first_name varchar(20) NOT NULL,
             last_name varchar(20) NOT NULL, 
             city varchar(20) NOT NULL, 
             country varchar(20) NOT NULL,
             address varchar(100) NOT NULL,
             cellphone varchar(12) NOT NULL,
-            CONSTRAINT phone_check CHECK (length(cellphone) >= 11),
-            CONSTRAINT phone_max CHECK (length(cellphone) <= 11)
+            CONSTRAINT phone_min_length CHECK (length(cellphone) >= 11),
+            CONSTRAINT phone_max_length CHECK (length(cellphone) <= 11)
         )`
     )
 
-     // CREATE ARTIST TABLE
-     await connection.execute(
+    // CREATE ARTIST TABLE
+    await connection.execute(
         `CREATE TABLE ARTISTS (
-            artistID number generated always as identity PRIMARY KEY, 
+            artistID NUMBER PRIMARY KEY, 
             first_name varchar(20) NOT NULL,
             last_name varchar(20) NOT NULL,
             country varchar(20) NOT NULL,
@@ -89,20 +102,21 @@ const createTables = async (connection) => {
     // CREATE PAINTING TABLE
     await connection.execute(
         `CREATE TABLE PAINTINGS(
-            paintingID NUMBER generated always as identity PRIMARY KEY, 
+            paintingID NUMBER PRIMARY KEY, 
             name varchar(20) NOT NULL,
             monthly_rental NUMBER(38, 2) NOT NULL,
             theme varchar(20) NOT NULL,
             artistID NUMBER NOT NULL,
             ownerID NUMBER NOT NULL,
             status VARCHAR(20) DEFAULT 'available' NOT NULL,
+            insert_date DATE DEFAULT SYSDATE NOT NULL,
             CONSTRAINT fk_artist FOREIGN KEY (artistID) REFERENCES ARTISTS(artistID) ON DELETE CASCADE,
             CONSTRAINT fk_owner FOREIGN KEY (ownerID) REFERENCES OWNERS(ownerID) ON DELETE CASCADE,
             CONSTRAINT fk_status FOREIGN KEY (status) REFERENCES STATUS(status_id)
         )`
     )
 
-   
+
 
     // CREATE CATEOGRY TABLE
     await connection.execute(
@@ -114,9 +128,9 @@ const createTables = async (connection) => {
     )
 
     //  CREATE CUSTOMER TABLE
-     await connection.execute(
+    await connection.execute(
         `CREATE TABLE CUSTOMERS (
-            customerID number generated always as identity PRIMARY KEY, 
+            customerID number PRIMARY KEY, 
             first_name varchar(20) NOT NULL,
             last_name varchar(20) NOT NULL,
             city varchar(20) NOT NULL,
@@ -131,11 +145,12 @@ const createTables = async (connection) => {
     // CREATE RENTED TABLE
     await connection.execute(
         `CREATE TABLE RENTED (
-            rentID NUMBER generated always as identity PRIMARY KEY, 
+            rentID NUMBER PRIMARY KEY, 
             rent_date DATE NOT NULL,
             due_date DATE NOT NULL, 
             returned NUMBER(1) DEFAULT 0 NOT NULL,
             return_date DATE,
+            monthly_rent NUMBER(38, 2) NOT NULL,
             customerID NUMBER NOT NULL,
             paintingID NUMBER NOT NULL,
             CONSTRAINT fk_customer FOREIGN KEY(customerID) REFERENCES CUSTOMERS(customerID) ON DELETE CASCADE,

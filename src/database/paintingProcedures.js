@@ -57,9 +57,25 @@ const rentPaintingProcedure = async (connection) => {
         `CREATE OR REPLACE PROCEDURE rent_painting (
             rentdate DATE, duedate DATE, c_id NUMBER, p_id NUMBER
         ) AS
+        rent_price NUMBER(38, 2);
+        original_price NUMBER(38, 2);
+        discount_percentage NUMBER(6, 2);
         BEGIN
-            INSERT INTO RENTED (rent_date, due_date, returned, customerID, paintingID)
-            VALUES (rentdate, duedate, 0, c_id, p_id);
+            -- Calculate rent price based on customer discount
+
+            SELECT discount INTO discount_percentage FROM category WHERE 
+            categoryID = (SELECT categoryID FROM customers WHERE customerID = c_id);
+
+            -- get original monthly rental of the painting
+
+            SELECT monthly_rental INTO original_price FROM paintings WHERE
+            paintingID = p_id;
+
+            -- Calculate discounted price
+            rent_price := original_price * (1 - discount_percentage);
+
+            INSERT INTO RENTED (rent_date, due_date, returned, monthly_rent, customerID, paintingID)
+            VALUES (rentdate, duedate, 0, rent_price, c_id, p_id);
 
             UPDATE PAINTINGS SET status = 'hired' WHERE paintingID = p_id;
 

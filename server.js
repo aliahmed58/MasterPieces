@@ -22,7 +22,6 @@ app.use(bodyParser.urlencoded({extended: true}))
 app.use("/css", express.static(__dirname + "/node_modules/bootstrap/dist/css"))
 app.use("/public", express.static(__dirname + "/src/public"))
 
-
 // use home routes
 app.use(homeRoutes)
 
@@ -38,11 +37,12 @@ app.use('/customers', customerRoutes)
 // painting routes - all urls with /paintings
 app.use('/paintings', paintingRoutes)
 
+
 initdb()
     .then(() => {
-        app.listen(process.env.PORT,  () => {
+        app.listen(3000,  () => {
             console.log(`connected to database`)
-            console.log(`server listening on port ${process.env.PORT}`);
+            console.log(`server listening on port ${3000}`);
         })
     })
     .catch(err => {

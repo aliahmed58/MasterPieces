@@ -186,7 +186,7 @@ const deleteArtist = async (req, res) => {
     let connection;
 
     try {
-        connection = await oracledb.getConnection()
+        connection = await oracledb.getConnection();
 
         let artistID = req.query.artistID;
 

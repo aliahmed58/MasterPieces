@@ -3,6 +3,7 @@ const oracledb = require('oracledb');
 
 const createTables = require('./createTables');
 const createArtistProcedures = require('./src/database/artistProcedures');
+const createCommonTriggers = require('./src/database/common');
 const createCustomerProcedures = require('./src/database/customerProcedures');
 const createOwnerProcedures = require('./src/database/ownerProcedures');
 const createPaintingProcedures = require('./src/database/paintingProcedures');
@@ -12,11 +13,10 @@ const initdb = async () => {
     let connection;
 
     try {
-
         await oracledb.createPool({
-            user: process.env.DB_USER,
-            password: process.env.DB_PASS,
-            connectionString: process.env.DB_LINK,
+            user: "admin",
+            password: "sysadmin",
+            connectionString: "oracle-102655-0.cloudclusters.net:16756/XE",
             poolIncrement: 0,
             poolMin: 4,
             poolMax: 4
@@ -33,7 +33,10 @@ const initdb = async () => {
         }
         
 
-        // CREATE PROCEDURES
+        // CREATE PROCEDURES AND TRIGGERS
+
+        // create common triggers
+        await createCommonTriggers(connection);
 
         // create owner procedures
         await createOwnerProcedures(connection)

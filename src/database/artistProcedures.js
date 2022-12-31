@@ -34,8 +34,6 @@ const insertArtistProcedure = async (connection) => {
                 age := (EXTRACT(YEAR FROM a_death) - EXTRACT(YEAR FROM a_dob));
             END IF;
         
-            
-    
             INSERT INTO ARTISTS (first_name, last_name, country, dob, death_date, alive, age) 
             VALUES (
                 f_name, l_name, a_country, TRUNC(a_dob), TRUNC(a_death), alive, age
