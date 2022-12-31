@@ -5,7 +5,7 @@ const checkDobTrigger = async (connection) => {
         BEFORE INSERT OR UPDATE ON ARTISTS
         FOR EACH ROW
         BEGIN
-            IF (:new.dob > SYSDATE OR :new.dob > :new.death_date OR :new.death_date > SYSDATE) THEN
+            IF (:new.dob > SYSDATE OR :new.dob > :new.death_date OR :new.death_date >= SYSDATE) THEN
             RAISE_APPLICATION_ERROR(-20001, 'Invalid date of birth or date of death');
             END IF;
         END;`
