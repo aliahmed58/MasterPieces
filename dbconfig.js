@@ -14,9 +14,9 @@ const initdb = async () => {
 
     try {
         await oracledb.createPool({
-            user: "admin",
-            password: "sysadmin",
-            connectionString: "oracle-102655-0.cloudclusters.net:16756/XE",
+            user: process.env.DB_USER,
+            password: process.env.DB_PASS,
+            connectionString: process.env.DB_LINK,
             poolIncrement: 0,
             poolMin: 4,
             poolMax: 4
