@@ -1,11 +1,26 @@
-const dropAllTables = async (connection) => {
+// drop a table if it exists SQL 
+const dropTableIfExists = async (connection, table_name) => {
+    await connection.execute(
+        `BEGIN
+            EXECUTE IMMEDIATE 'DROP TABLE ' || :table_name;
+        EXCEPTION
+            WHEN OTHERS THEN
+                IF SQLCODE != -942 THEN
+                    RAISE;
+                END IF;
+        END;`, [table_name]
+    )
+}
+
+const dropAllTablesIfExist = async (connection) => {
     // drop all tables in the beginning 
-    await connection.execute('DROP TABLE RENTED');
-    await connection.execute('DROP TABLE PAINTINGS');
-    await connection.execute('DROP TABLE CUSTOMERS');
-    await connection.execute('DROP TABLE ARTISTS');
-    await connection.execute('DROP TABLE OWNERS');
-    await connection.execute('DROP TABLE CATEGORY');
+    await dropTableIfExists(connection, 'RENTED');
+    await dropTableIfExists(connection, 'PAINTINGS');
+    await dropTableIfExists(connection, 'STATUS');
+    await dropTableIfExists(connection, 'CUSTOMERS');
+    await dropTableIfExists(connection, 'ARTISTS');
+    await dropTableIfExists(connection, 'OWNERS');
+    await dropTableIfExists(connection, 'CATEGORY');
 }
 
 const insertDefaultValues = async (connection) => {
@@ -32,6 +47,9 @@ const insertDefaultValues = async (connection) => {
 
 const createTables = async (connection) => {
 
+    // DROP ALL TABLES IN THE START (FOR TESTING ONLY)
+    await dropAllTablesIfExist(connection);
+
     // CREATE OWNER TABLE
     await connection.execute(
         `CREATE TABLE OWNERS (
@@ -42,8 +60,8 @@ const createTables = async (connection) => {
             country varchar(20) NOT NULL,
             address varchar(100) NOT NULL,
             cellphone varchar(12) NOT NULL,
-            CONSTRAINT phone_check CHECK (length(cellphone) >= 10),
-            CONSTRAINT phone_max CHECK (length(cellphone) <= 10)
+            CONSTRAINT phone_check CHECK (length(cellphone) >= 11),
+            CONSTRAINT phone_max CHECK (length(cellphone) <= 11)
         )`
     )
 
@@ -73,7 +91,7 @@ const createTables = async (connection) => {
         `CREATE TABLE PAINTINGS(
             paintingID NUMBER generated always as identity PRIMARY KEY, 
             name varchar(20) NOT NULL,
-            monthly_rental NUMBER(6, 2) NOT NULL,
+            monthly_rental NUMBER(38, 2) NOT NULL,
             theme varchar(20) NOT NULL,
             artistID NUMBER NOT NULL,
             ownerID NUMBER NOT NULL,
@@ -131,4 +149,4 @@ const createTables = async (connection) => {
 
 
 
-module.exports = {dropAllTables, createTables, insertDefaultValues}
+module.exports = createTables

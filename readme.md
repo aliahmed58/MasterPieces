@@ -44,5 +44,6 @@ To run the expresjs application:
     - ```DB_USER = XXXX``` replace XXXX with your database user name you configured.
     - ```DB_PASS = XXXX``` replace XXXX with your database user password you configured.
     - ```DB_LINK = XXXX``` replace XXXX with your database link such as ```localhost/xepdb1``` (default)
+    - ```INIT_TABLES = 1``` on running the project first time so tables can be created. Set to ```-1``` later.
 
 4. Run using the command ```nodemon server.js``` or ```npm run start```

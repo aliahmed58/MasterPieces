@@ -17,9 +17,12 @@
 
 
         <form method="POST" action="/artists/new">
-
-            
             <div class="container">
+
+                <% if (err) { %>
+                    <p><code>Error: <%= err %> </code></p>
+                <% } %>
+
                 <div class="row">
                     <div class="form-group col-sm-3">
                         <label for="inputName">First Name</label>

@@ -17,6 +17,11 @@
 
         <form action="/owners/new" method="POST">
             <div class="container">
+
+                <% if (err) { %>
+                    <p><code>Error: <%= err %> </code></p>
+                <% } %>
+
                 <div class="row">
                     <div class="form-group col-sm-3">
                         <label for="inputName">First Name</label>

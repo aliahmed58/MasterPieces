@@ -7,4 +7,8 @@ const renderHelpPage = (req, res) => {
     res.render('../src/views/help')
 }
 
-module.exports = {renderHomepage, renderHelpPage}
+const renderAboutPage = (req, res) => {
+    res.render('../src/views/about')
+}
+
+module.exports = {renderHomepage, renderHelpPage, renderAboutPage}

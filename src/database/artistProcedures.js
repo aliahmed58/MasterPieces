@@ -5,25 +5,13 @@ const checkDobTrigger = async (connection) => {
         BEFORE INSERT OR UPDATE ON ARTISTS
         FOR EACH ROW
         BEGIN
-            IF (:new.dob > SYSDATE OR :new.dob > :new.death_date) THEN
-            RAISE_APPLICATION_ERROR(-20001, 'Invalid date of birth');
+            IF (:new.dob > SYSDATE OR :new.dob > :new.death_date OR :new.death_date > SYSDATE) THEN
+            RAISE_APPLICATION_ERROR(-20001, 'Invalid date of birth or date of death');
             END IF;
         END;`
     )
 }
 
-const checkDodTrigger = async(connection) => {
-    await connection.execute(
-        `CREATE OR REPLACE TRIGGER check_dod
-        BEFORE INSERT OR UPDATE ON ARTISTS
-        FOR EACH ROW
-        BEGIN
-            IF (:new.death_date > :new.death_date OR :new.death_date > SYSDATE) THEN
-            RAISE_APPLICATION_ERROR(-20001, 'Invalid date of death');
-            END IF;
-        END;`
-    )
-}
 
 // insert a new artist procedure
 const insertArtistProcedure = async (connection) => {
@@ -95,7 +83,6 @@ const createArtistProcedures = async (connection) => {
     await insertArtistProcedure(connection)
     await deleteArtistProcedure(connection)
     await checkDobTrigger(connection)
-    await checkDodTrigger(connection)
     await generateReportProcedure(connection)
 }
 

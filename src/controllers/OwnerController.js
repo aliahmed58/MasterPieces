@@ -66,7 +66,7 @@ const generateReport = async (req, res) => {
 
 // render input form 
 const renderForm = (req, res) => {
-    res.render('../src/views/owners/NewOwner')
+    res.render('../src/views/owners/NewOwner', {err: null})
 }
 
 // process input form 
@@ -75,6 +75,8 @@ const processForm = async (req, res) => {
     let connection;
 
     let { firstname, lastname, city, country, address, cellphone } = req.body;
+
+    let error = null;
 
 
     try {
@@ -97,11 +99,16 @@ const processForm = async (req, res) => {
         )
     }
     catch (err) {
+        error = err;
         console.log(err)
+        res.render('../src/views/owners/NewOwner',  {err: err.message});
+        return;
     }
     finally {
 
-        res.redirect('/')
+        if (!error) {
+            res.redirect('/')
+        }
 
         try {
             await connection.close();

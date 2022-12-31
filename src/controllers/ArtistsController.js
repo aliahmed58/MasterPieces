@@ -125,7 +125,7 @@ const generateReport = async (req, res) => {
 
 // render form for new artist
 const renderForm = (req, res) => {
-    res.render('../src/views/artists/NewArtist')
+    res.render('../src/views/artists/NewArtist', {err : null})
 }
 
 // process input form
@@ -133,6 +133,8 @@ const processForm = async (req, res) => {
 
     let connection;
     let { firstname, lastname, country, dob, dod } = req.body;
+
+    let error;
 
     dob = convertDate(dob)
 
@@ -158,11 +160,17 @@ const processForm = async (req, res) => {
         )
     }
     catch (err) {
-        console.log(err)
+        error = err;
+        console.log(err.message)
+        // if error is caught - render back the form with the error displayed
+        res.render('../src/views/artists/NewArtist', {err: err.message})
+        return;
     }
     finally {
 
-        res.redirect('/')
+        if (!error) {
+            res.redirect('/')
+        }
 
         try {
             await connection.close();
