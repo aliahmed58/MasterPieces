@@ -17,6 +17,11 @@
 
         <form action="/paintings/new" method="POST">
             <div class="container">
+                <p>Info:</p>
+                <p>1. Artist record should be inserted first through the <b>Add Artist</b> so it can have a painting
+                    added here. </p>
+                <p>2. Owner record should be inserted first through the <b>Add Owner</b> so it can have a painting added
+                    here. </p>
                 <div class="row">
                     <div class="form-group col-sm-4">
                         <label for="inputName">Name</label>
@@ -24,32 +29,48 @@
                     </div>
                     <div class="form-group col-sm-4">
                         <label for="inputName">Monthly Rental</label>
-                        <input type="number" required min="0" step=".01" pattern="^\d*(\.\d{0,2})?$"  class="form-control" name="rental" id="inputName" placeholder="Monthly Rental">
+                        <input type="number" required min="0" step=".01" pattern="^\d*(\.\d{0,2})?$"
+                            class="form-control" name="rental" id="inputName" placeholder="Monthly Rental">
                     </div>
 
                     <div class="form-group col-sm-4">
                         <label for="inputName">Theme</label>
-                        <input type="text" required class="form-control" name="theme" id="inputName" placeholder="Theme">
+                        <input type="text" required class="form-control" name="theme" id="inputName"
+                            placeholder="Theme">
                     </div>
 
                     <div class="form-group col-sm-4">
-                        <label for="inputName">Artist</label>
-                        <select required class="form-control" name="artists" id="category">
-                            <option value="" selected disabled hidden>Choose here</option>
-                            <% for( let index = 0; index < artists.length; index++ ) { %>
-                                <option value="<%= artists[index][0] %>"><%= artists[index][0] %> - <%= artists[index][1] %> <%= artists[index][2] %>  </option>
-                            <% } %>
-                        </select>
+                        <% if (artists.length> 0) { %>
+                            <label for="inputName">Artist</label>
+                            <% } else {%>
+                                <label for="inputName">Artist (None present)</label>
+                                <% } %>
+                                    <select required class="form-control" name="artists" id="category">
+                                        <option value="" selected disabled hidden>Choose artist</option>
+                                        <% for( let index=0; index < artists.length; index++ ) { %>
+                                            <option value="<%= artists[index][0] %>">
+                                                <%= artists[index][0] %> - <%= artists[index][1] %>
+                                                        <%= artists[index][2] %>
+                                            </option>
+                                            <% } %>
+                                    </select>
                     </div>
 
                     <div class="form-group col-sm-4">
-                        <label for="inputCountry">Owner</label>
-                        <select required class="form-control" name="owners" id="category">
-                            <option value="" selected disabled hidden>Choose here</option>
-                            <% for( let index = 0; index < owners.length; index++ ) { %>
-                                <option value="<%= owners[index][0] %>"><%= owners[index][0] %> - <%= owners[index][1] %> <%= owners[index][2] %>  </option>
-                            <% } %>
-                        </select>
+                        <% if (owners.length > 0) { %>
+                            <label for="inputCountry">Owner</label>
+                            <% } else { %>
+                                <label for="inputCountry">Owner (None present)</label>
+                                <% } %>
+                                    <select required class="form-control" name="owners" id="category">
+                                        <option value="" selected disabled hidden>Choose owner</option>
+                                        <% for( let index=0; index < owners.length; index++ ) { %>
+                                            <option value="<%= owners[index][0] %>">
+                                                <%= owners[index][0] %> - <%= owners[index][1] %>
+                                                        <%= owners[index][2] %>
+                                            </option>
+                                            <% } %>
+                                    </select>
                     </div>
 
                     <div class="form-group col-sm-4">

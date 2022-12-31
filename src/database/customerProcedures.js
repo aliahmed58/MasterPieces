@@ -1,3 +1,23 @@
+// delete customer trigger
+// whenever a customer is deleted, all paintings in his hiring
+// should be returned and set as available
+const deleteCustomerTrigger = async (connection) => {
+    await connection.execute(
+        `CREATE OR REPLACE TRIGGER delete_customer_trigger 
+        AFTER DELETE ON CUSTOMERS
+        FOR EACH ROW
+        DECLARE
+            pragma autonomous_transaction;
+            p_id NUMBER;
+        BEGIN
+            UPDATE PAINTINGS SET status = 'available' WHERE paintingID IN (SELECT paintingID FROM rented WHERE customerID = :old.customerID);
+
+            COMMIT;
+        END;`
+            
+    )
+}
+
 // create insert customer procedure
 const insertCustomerProcedure = async (connection) => {
     await connection.execute(
@@ -39,7 +59,7 @@ const generateReportProcedure = async (connection) => {
             
             C.customerID, C.first_name, C.last_name, C.city, C.country, C.address, C.description,
             L.categoryname, L.discount,
-            P.paintingID, P.name, P.theme, R.RENT_DATE, R.due_date, R.returned
+            P.paintingID, P.name, P.theme, R.RENT_DATE, R.due_date, R.returned, R.return_date
 
             FROM RENTED R 
                 INNER JOIN PAINTINGS P ON R.paintingID = P.paintingID
@@ -50,12 +70,30 @@ const generateReportProcedure = async (connection) => {
     )
 }
 
+const returnPaintingProcedure = async (connection) => {
+    await connection.execute(
+        `CREATE OR REPLACE PROCEDURE customer_return_painting (
+            c_id NUMBER, p_id NUMBER
+        ) AS
+        BEGIN
+            UPDATE RENTED SET returned = 1, return_date = SYSDATE 
+            WHERE customerID = c_id AND paintingID = p_id;
+
+            UPDATE PAINTINGS SET status = 'available' WHERE paintingID = p_id;
+
+            COMMIT;
+        END;`
+    )
+}
+
 
 // create all procedures related to customers
 const createCustomerProcedures = async (connection) => {
     await insertCustomerProcedure(connection);
     await deleteCustomerProcedure(connection);
     await generateReportProcedure(connection);
+    await returnPaintingProcedure(connection);
+    await deleteCustomerTrigger(connection);
 }
 
 module.exports = createCustomerProcedures

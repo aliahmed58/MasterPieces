@@ -50,7 +50,7 @@ const insertArtistProcedure = async (connection) => {
     
             INSERT INTO ARTISTS (first_name, last_name, country, dob, death_date, alive, age) 
             VALUES (
-                f_name, l_name, a_country, a_dob, a_death, alive, age
+                f_name, l_name, a_country, TRUNC(a_dob), TRUNC(a_death), alive, age
             );
 
             COMMIT;

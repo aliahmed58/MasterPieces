@@ -10,6 +10,22 @@ const listAllPaintings = async (req, res) => {
 
         paintings = await connection.execute(`SELECT * FROM PAINTINGS`);
 
+        // get artist and owner names to show in all paintings section
+        for (let i = 0; i < paintings.rows.length; i ++) {
+
+            let artistID = paintings.rows[i][4];
+            let ownerID = paintings.rows[i][5];
+
+            let owner = await connection.execute(`SELECT first_name, last_name FROM OWNERS WHERE ownerID = :id`, [ownerID]);
+            let ownername = owner.rows[0][0] + ' ' + owner.rows[0][1]
+
+            let artist = await connection.execute(`SELECT first_name, last_name FROM ARTISTS WHERE artistID = :id`, [artistID]);
+            let artistname = artist.rows[0][0] + ' ' + artist.rows[0][1];
+
+            paintings.rows[i].push(artistname);
+            paintings.rows[i].push(ownername);
+        }
+
     }
     catch (err) {
 

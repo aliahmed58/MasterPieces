@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/public/home.css"/>
+    <link rel="stylesheet" href="/public/global.css"/>
+    <title>Help</title>
+</head>
+<body>
+    <%- include ('./partials/navbar') %> 
+
+    <div class="container text-center mt-4">
+        <h2>Guide</h2>
+    </div>
+
+    <div class="container">
+        <ol class="list-group">
+            <li class="list-group-item">All records can be inserted given the links in the <a href="/" class="link-info">homepage</a></li>
+            <li class="list-group-item">Some records like painting require records such as <code>owner</code> and <code>artist</code> to be previously inserted</li>
+            <li class="list-group-item">Paintings can be returned by customers by clicking the return button on their report page (only if rented in first place)</li>
+            <li class="list-group-item">Paintings can be resubmitted by owners by clicking the resubmit button on their report page (only if returned)</li>
+            <li class="list-group-item">Any type of records can be deleted by accessing the complete list through links given on the homepage</li>
+        </ol>
+    </div>
+
+    <div class="container text-center mt-4">
+        <h3>Constraints</h3>
+    </div>
+
+    <div class="container">
+        <ol class="list-group">
+            <li class="list-group-item">Paintings cannot be <code>inserted</code> without having a previously inserted <b>owner</b> and <b>artist</b> record
+            </li>
+            <li class="list-group-item">Only paintings that have status <code>available</code> can be rented to a customer</li>
+            <li class="list-group-item">Deleting an owner will also <code>delete</code> the painting associated with them</li>
+            <li class="list-group-item">Deleting an artist will also <code>delete</code> the painting associated with them</li>
+            <li class="list-group-item">Deleting a customer will set the status to <code>available</code> for all paintings rented by that customer </li>
+        </ol>
+    </div>
+
+</body>
+</html>

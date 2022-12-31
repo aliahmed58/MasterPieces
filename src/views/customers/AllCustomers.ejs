@@ -6,6 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/public/liststyles.css" />
+    <link rel="stylesheet" href="/public/global.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Customers</title>
 </head>
@@ -13,21 +14,33 @@
 <body>
     <%- include('../partials/navbar') %>
 
+        <% if (data.length === 0) { %>
+            <div class="container text-center" style="margin-top: 40px;">
+                <h3 >No customer records found.</h3>
+                <p ><a href="/customers/new" class="link-info">Insert</a> a new customer or visit the <a href="/help" class="link-info">help</a> page</p>
+            </div>
+        <% } %>
+
         <!-- each row shall display 4 cards -->
-        <% for( let row=0; row < data.length; row++ ) { %>
-            <div class="row">
-                <div class="card shadow">
-                    <div class="card-header">
-                        Customer no: <%= data[row][0] %> 
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Customer Name: <%= data[row][1] %> <%= data[row][2] %>  </h5>
-                        <a href="/customers/report/?customerID=<%= data[row][0] %> " class="btn">View Report</a>
-                        <a href="/customers/delete?customerID=<%= data[row][0] %>" class="btn">Delete</a>
+        <div class="row">
+            <% for( let row=0; row < data.length; row++ ) { %>
+                <div class="col-sm-4">
+                    <div class="card shadow">
+                        <div class="card-header">
+                            Customer no: <%= data[row][0] %>
+                        </div>
+                        <div class="card-body">
+                            <h5 class="card-title">Customer Name: <%= data[row][1] %>
+                                    <%= data[row][2] %>
+                            </h5>
+                            <a href="/customers/report/?customerID=<%= data[row][0] %> " class="btn">View Report</a>
+                            <a href="/customers/delete?customerID=<%= data[row][0] %>" class="btn">Delete</a>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <% } %>
+                <% } %>
+        </div>
+
 
 
 </body>

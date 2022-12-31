@@ -46,7 +46,7 @@
                     <div class="form-group col-sm-3">
                         <label for="category">Category</label>
                         <select required class="form-control" name="category" id="category">
-                            <option value="" selected disabled hidden>Choose here</option>
+                            <option value="" selected disabled hidden>Choose category</option>
                             <% for( let index = 0; index < categories.length; index++ ) { %>
                                 <option value="<%= categories[index][0] %>"><%= categories[index][1] %> </option>
                             <% } %>

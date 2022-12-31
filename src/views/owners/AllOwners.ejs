@@ -6,27 +6,41 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/public/liststyles.css" />
+    <link rel="stylesheet" href="/public/global.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Owners</title>
 </head>
 
 <body>
     <%- include('../partials/navbar') %>
-        <!-- each row shall display 4 cards -->
-        <% for( let row=0; row < data.length; row++ ) { %>
-            <div class="row">
-                <div class="card shadow">
-                    <div class="card-header">
-                        Owner no: <%= data[row][0] %>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Owner Name: <%= data[row][1] %> <%= data[row][2] %> </h5>
-                        <a href="/owners/report/?ownerID=<%= data[row][0] %> " class="btn">View Report</a>
-                        <a href="/owners/delete/?ownerID=<%= data[row][0] %> " class="btn">Delete</a>
-                    </div>
-                </div>
+
+        <% if (data.length===0) { %>
+            <div class="container text-center" style="margin-top: 40px;">
+                <h3>No owner records found.</h3>
+                <p><a href="/owners/new" class="link-info">Insert</a> a new owner or visit the <a href="/help"
+                        class="link-info">help</a> page</p>
             </div>
             <% } %>
+
+                <!-- each row shall display 4 cards -->
+                <div class="row">
+                    <% for( let row=0; row < data.length; row++ ) { %>
+                        <div class="col-sm-4">
+                            <div class="card shadow">
+                                <div class="card-header">
+                                    Owner no: <%= data[row][0] %>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Owner Name: <%= data[row][1] %>
+                                            <%= data[row][2] %>
+                                    </h5>
+                                    <a href="/owners/report/?ownerID=<%= data[row][0] %> " class="btn">View Report</a>
+                                    <a href="/owners/delete/?ownerID=<%= data[row][0] %> " class="btn">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                </div>
 
 </body>
 

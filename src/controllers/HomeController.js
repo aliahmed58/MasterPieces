@@ -3,4 +3,8 @@ const renderHomepage = (req, res) => {
     res.render('../src/views/home')
 }
 
-module.exports = {renderHomepage}
+const renderHelpPage = (req, res) => {
+    res.render('../src/views/help')
+}
+
+module.exports = {renderHomepage, renderHelpPage}

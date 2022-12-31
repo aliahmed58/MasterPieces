@@ -6,26 +6,70 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <link rel="stylesheet" href="/css/bootstrap.min.css" />
     <link rel="stylesheet" href="/public/liststyles.css" />
+    <link rel="stylesheet" href="/public/global.css" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Paintings</title>
 </head>
 
 <body>
     <%- include('../partials/navbar') %>
-        <!-- each row shall display 4 cards -->
-        <% for( let row=0; row < data.length; row++ ) { %>
-            <div class="row">
-                <div class="card shadow">
-                    <div class="card-header">
-                        Painting no: <%= data[row][0] %>
-                    </div>
-                    <div class="card-body">
-                        <h5 class="card-title">Painting Name: <%= data[row][1] %>  </h5>
-                        <a href="/paintings/delete/?paintingID=<%= data[row][0] %> " class="btn">Delete</a>
-                    </div>
-                </div>
+
+        <% if (data.length===0) { %>
+            <div class="container text-center" style="margin-top: 40px;">
+                <h3>No painting records found.</h3>
+                <p><a href="/paintings/new" class="link-info">Insert</a> a new painting or visit the <a href="/help"
+                        class="link-info">help</a> page</p>
             </div>
             <% } %>
+
+                <!-- each row shall display 4 cards -->
+                <div class="row">
+                    <% for( let row=0; row < data.length; row++ ) { %>
+                        <div class="col-sm-6">
+                            <div class="card shadow">
+                                <div class="card-header">
+                                    Painting no: <%= data[row][0] %>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">Painting Name: <%= data[row][1] %>
+                                    </h5>
+                                    <table class="table table-bordered table-responsive">
+                                        <thead>
+                                            <tr>
+                                                <td scope="col">Theme</td>
+                                                <td scope="col">Rental</td>
+                                                <td scope="col">Status</td>
+                                                <td scope="col">Artist</td>
+                                                <td scope="col">Owner</td>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>
+                                                    <%= data[row][3] %>
+                                                </td>
+                                                <td>
+                                                    <%= data[row][2] %>$
+                                                </td>
+                                                <td>
+                                                    <%= data[row][6] %>
+                                                </td>
+                                                <td>
+                                                    <%= data[row][7] %>
+                                                </td>
+                                                <td>
+                                                    <%= data[row][8] %>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <a href="/paintings/delete/?paintingID=<%= data[row][0] %> " class="btn">Delete</a>
+                                </div>
+                            </div>
+                        </div>
+                        <% } %>
+                </div>
+
 
 </body>
 

@@ -17,7 +17,7 @@ const convertDate = (date) =>{
 
     // access month from the list months using month - 1 as index
     let oracle_month = months[month - 1]
-    let oracle_year = year.slice(2, 4);
+    let oracle_year = year
     let oracle_day = day
 
     let oracle_date = `${oracle_day}-${oracle_month}-${oracle_year}`

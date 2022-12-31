@@ -38,3 +38,17 @@ body {
     transition: 0.5s all;
     background-color: #4799eb;
 }
+
+thead {
+    background-color: #0e2439;
+    color: white;
+}
+
+tbody {
+    color: white;
+    background-color: #1f364d;
+}
+
+table.table-bordered{
+    border:1px solid #1f364d;
+}

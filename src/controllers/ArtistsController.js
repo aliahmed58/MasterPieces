@@ -46,6 +46,7 @@ const generateReport = async (req, res) => {
     let result;
 
     let data = [];
+    let artists;
 
     try {
         connection = await oracledb.getConnection();
@@ -67,14 +68,14 @@ const generateReport = async (req, res) => {
         * 12: Owner First Name
         * 13: Owner Last Name
         * 14: Owner cellphone
-        */
+        */  
 
         let records = await connection.execute(
             `BEGIN
                 get_artist_report(:id, :cursor);
             END;`,
             {
-                id: req.query.artistID,
+                id: parseInt(req.query.artistID),
                 cursor: {
                     type: oracledb.CURSOR,
                     dir: oracledb.BIND_OUT
@@ -93,8 +94,13 @@ const generateReport = async (req, res) => {
             queryStream.on('close', resolve);
         });
 
+        
         await consumeStream;
 
+        // if there aren't any paintings for that artist, fetch his own data 
+        artists = await connection.execute(
+            `SELECT * FROM ARTISTS WHERE artistID = :id`, [req.query.artistID]
+        );
 
     }
     catch (err) {
@@ -104,7 +110,7 @@ const generateReport = async (req, res) => {
     finally {
         try {
 
-            res.render('../src/views/artists/ArtistReport', { data: data })
+            res.render('../src/views/artists/ArtistReport', { data: data, artists: artists.rows })
 
             // close db connection
             await connection.close()
@@ -132,7 +138,6 @@ const processForm = async (req, res) => {
 
     if (dod === '') dod = null;
     else dod = convertDate(dod)
-
 
     try {
 

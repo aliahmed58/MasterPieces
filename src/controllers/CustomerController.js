@@ -35,6 +35,7 @@ const generateReport = async (req, res) => {
 
     let connection;
     let data = [];
+    let customer;
 
     const customerID = req.query.customerID;
 
@@ -59,6 +60,7 @@ const generateReport = async (req, res) => {
         * 12: Rent Date
         * 13: Due Date
         * 14: Returned (1/0)
+        * 15: Returned date
         */
         let records = await connection.execute(
             `BEGIN
@@ -84,13 +86,20 @@ const generateReport = async (req, res) => {
         });
 
         await consumeStream;
+
+        customer = await connection.execute(
+            `SELECT * FROM CUSTOMERS C 
+            INNER JOIN CATEGORY L ON C.CATEGORYID = L.CATEGORYID
+            WHERE customerID = :id`, [customerID]
+        )
+
     }
     catch (err) {
         console.log(err);
     }
     finally {
         try {
-            res.render('../src/views/customers/CustomerReport', { data: data })
+            res.render('../src/views/customers/CustomerReport', { data: data, customer: customer.rows })
             await connection.close()
         }
         catch (err) {
@@ -176,8 +185,6 @@ const deleteCustomer = async (req, res) => {
 
     let connection;
     const customerID = req.query.customerID;
-
-    console.log(customerID)
     
     try {
         connection = await oracledb.getConnection();
@@ -205,10 +212,46 @@ const deleteCustomer = async (req, res) => {
     }
 }
 
+const returnPainting = async (req, res) => {
+
+    let connection;
+    let {customerID, paintingID} = req.query;
+
+    customerID = parseInt(customerID);
+    paintingID = parseInt(paintingID);
+
+    try {
+        connection = await oracledb.getConnection();
+
+        await connection.execute(
+            `BEGIN
+                customer_return_painting(:customerID, :paintingID);
+            END;`, {customerID: customerID, paintingID: paintingID}
+        )
+       
+    }
+    catch (err) {
+
+        console.log(err);
+    }
+    finally {
+        try {
+
+            res.redirect(`/customers/report/?customerID=${customerID}`)
+
+            await connection.close()
+        }
+        catch (err) {
+            console.log(err.message)
+        }
+    }
+}
+
 module.exports = {
     listAllCustomers,
     generateReport,
     renderForm,
     processForm,
-    deleteCustomer
+    deleteCustomer,
+    returnPainting
 }

@@ -17,9 +17,15 @@
 
         <form action="/paintings/hire" method="POST">
             <div class="container">
+                <p>Info:</p>
+                <p>1. All paintings listed are those which are available to rent, if none is available then no painting can be rented</p>
                 <div class="row">
                     <div class="form-group col-sm-4">
-                        <label for="inputName">Painting</label>
+                        <% if (data.length > 0) { %>
+                            <label for="inputName">Painting</label>
+                        <% } else { %>
+                            <label for="inputName">Painting (None available)</label>
+                        <% } %> 
                         <select required class="form-control" name="artistID" id="category">
                             <option value="" selected disabled hidden>Choose here</option>
                             <% for( let index = 0; index < data.length; index++ ) { %>
@@ -31,7 +37,11 @@
                     </div>
 
                     <div class="form-group col-sm-4">
-                        <label for="inputName">Customers</label>
+                        <% if (customers.length > 0) { %>
+                            <label for="inputName">Customer</label>
+                        <% } else { %>
+                            <label for="inputName">Customer (None present)</label>
+                        <% } %> 
                         <select required class="form-control" name="customerID" id="category">
                             <option value="" selected disabled hidden>Choose here</option>
                             <% for( let index = 0; index < customers.length; index++ ) { %>

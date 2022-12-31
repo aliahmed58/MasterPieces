@@ -22,28 +22,28 @@
             <div class="container subcontainer card shadow rounded">
                 <div class="row info text-center">
                     <div class="col-sm">
-                        <span class="align-middle">Artist no.: <%= data[0][0]  %>  </span>
+                        <span class="align-middle">Artist no.: <%= artists[0][0]  %>  </span>
                     </div>
                     <div class="col-sm">
-                        <span class="align-middle">Year of birth: <%= String(data[0][3]).slice(11, 15) %> </span>
+                        <span class="align-middle">Year of birth: <%= String(artists[0][4]).slice(11, 15) %> </span>
                     </div>
                     <div class="col-sm">
-                        <span class="align-middle">Age: <%= data[0][4] %> </span>
+                        <span class="align-middle">Age: <%= artists[0][7] %> </span>
                     </div>
                 </div>
                 <div class="row info text-center">
                     <div class="col-sm ">
-                        <span class="align-middle">Artist Name: <%= data[0][1] %> <%= data[0][2] %>   </span>
+                        <span class="align-middle">Artist Name: <%= artists[0][1] %> <%= artists[0][2] %>   </span>
                     </div>
                     <div class="col-sm">
-                        <% if (data[5] !== null) { %>
-                            <span class="align-middle">Year of death: <%= String(data[0][5]).slice(11, 15) %> </span>
+                        <% if (artists[0][5] !== null) { %>
+                            <span class="align-middle">Year of death: <%= String(artists[0][5]).slice(11, 15) %> </span>
                         <% } else { %>
                             <span class="align-middle">Year of death: (alive)</span>
                         <% } %>
                     </div>
                     <div class="col-sm">
-                        <span class="align-middle">Country of birth: <%= data[0][6] %> </span>
+                        <span class="align-middle">Country of birth: <%= artists[0][3] %> </span>
                     </div>
                 </div>
             </div>
