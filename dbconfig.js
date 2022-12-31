@@ -19,11 +19,12 @@ const initdb = async () => {
             connectionString: "oracle-102655-0.cloudclusters.net:16756/XE",
             poolIncrement: 0,
             poolMin: 4,
-            poolMax: 4
+            poolMax: 4,
+            poolAlias: 'main'
         })
 
         // create tables needed for database
-        connection = await oracledb.getConnection();
+        connection = await oracledb.getConnection("main");
 
         if (process.env.INIT_TABLES == 1) {
             console.log('DATABASE TABLES DROPPED AND CREATED')
