@@ -31,19 +31,19 @@ hiring
 
 - For each artist, a returns report for those paintings not hired over the past six months 
 
-## Requirements
+## Requirements - How to run
 
 To run the expresjs application:
 
 1. Install the dependencies using ```npm install```
 
-2. Download and install *Oracle Database XE* using the instructions given here: [Install Oracle XE for nodejs](https://www.oracle.com/database/technologies/appdev/quickstartnodeonprem.html) 
+2. If you do not have any oracle database instance on your local computer, download and install *Oracle Database XE* using the instructions given here: [Install Oracle XE for nodejs](https://www.oracle.com/database/technologies/appdev/quickstartnodeonprem.html) 
 
-3. Create a ```.env``` file in the root directory (same as ```server.js```) and add the following variables:
+4. Create a ```.env``` file in the root directory (same as ```server.js```) and add the following variables:
     - ```PORT = XXXX``` the port you wish to run the server on 
     - ```DB_USER = XXXX``` replace XXXX with your database user name you configured.
     - ```DB_PASS = XXXX``` replace XXXX with your database user password you configured.
-    - ```DB_LINK = XXXX``` replace XXXX with your database link such as ```localhost/xepdb1``` (default)
+    - ```DB_LINK = XXXX``` replace XXXX with your database link such as ```localhost/xepdb1``` (default for Oracle XE, can be different for other oracle databases)
     - ```INIT_TABLES = 1``` on running the project first time so tables can be created. Set to ```-1``` later.
 
-4. Run using the command ```nodemon server.js``` or ```npm run start```
+5. Run using the command ```nodemon server.js``` or ```npm run start```

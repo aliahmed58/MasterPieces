@@ -22,6 +22,13 @@
             </div>
             <% } %>
 
+            <div class="container-fluid" style="margin: 20px 0px 0px 30px;">
+                <h3>Note</h3>
+                <p>The return button is for testing purposes, since paintings need to be returned after 6 months if not rented 
+                    and testing cannot be done withing that time duration.
+                </p>
+            </div>
+
                 <!-- each row shall display 4 cards -->
                 <div class="row">
                     <% for( let row=0; row < data.length; row++ ) { %>
@@ -31,39 +38,38 @@
                                     Painting no: <%= data[row][0] %>
                                 </div>
                                 <div class="card-body">
-                                    <h5 class="card-title">Painting Name: <%= data[row][1] %>
-                                    </h5>
+                                    <h5 class="card-title">Painting Name: <%= data[row][1] %></h5>
                                     <table class="table table-bordered table-responsive">
-                                        <thead>
-                                            <tr>
-                                                <td scope="col">Theme</td>
-                                                <td scope="col">Rental</td>
-                                                <td scope="col">Status</td>
-                                                <td scope="col">Artist</td>
-                                                <td scope="col">Owner</td>
-                                            </tr>
-                                        </thead>
                                         <tbody>
                                             <tr>
-                                                <td>
-                                                    <%= data[row][3] %>
-                                                </td>
-                                                <td>
-                                                    <%= data[row][2] %>$
-                                                </td>
-                                                <td>
-                                                    <%= data[row][6] %>
-                                                </td>
-                                                <td>
-                                                    <%= data[row][8] %>
-                                                </td>
-                                                <td>
-                                                    <%= data[row][9] %>
-                                                </td>
+                                                <td>Theme</td>
+                                                <td><%= data[row][3] %></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Rental</td>
+                                                <td><%= data[row][2] %>$</td>
+                                            </tr>
+                                            <tr>
+                                                <td>Status</td>
+                                                <td><%= data[row][6] %></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Artist</td>
+                                                <td><%= data[row][9] %></td>
+                                            </tr>
+                                            <tr>
+                                                <td>Owner</td>
+                                                <td><%= data[row][10] %></td>
                                             </tr>
                                         </tbody>
                                     </table>
                                     <a href="/paintings/delete/?paintingID=<%= data[row][0] %> " class="btn">Delete</a>
+                                    <% if (data[row][6] !== 'returned') { %>
+                                        <a href="/paintings/return/?paintingID=<%= data[row][0] %> " class="btn">Return (test)</a>
+                                    <% } else { %>
+                                        <a href="/paintings/return/?paintingID=<%= data[row][0] %> " class="btn disabled">Return (test)</a>
+                                    <% } %> 
+                                    <a href="/paintings/edit/?paintingID=<%= data[row][0] %> " class="btn btn-primary">Edit info</a>
                                 </div>
                             </div>
                         </div>

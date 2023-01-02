@@ -1,4 +1,6 @@
-require('dotenv').config();
+require('dotenv').config({
+    path: './.env.production'
+});
 
 const express = require('express');
 const app = express();
@@ -41,7 +43,7 @@ app.use('/paintings', paintingRoutes)
 initdb()
     .then(() => {
         app.listen(process.env.PORT,  () => {
-            console.log(`connected to database`)
+            console.log(`connected to database as user: ${process.env.DB_USER}`)
             console.log(`server listening on port ${process.env.PORT}`);
         })
     })

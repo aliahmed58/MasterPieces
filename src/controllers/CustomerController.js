@@ -66,12 +66,12 @@ const generateReport = async (req, res) => {
             `BEGIN
                 get_customer_report(:id, :cursor);
             END;`, {
-                id: customerID, 
-                cursor : {
-                    type: oracledb.CURSOR,
-                    dir: oracledb.BIND_OUT
-                }
+            id: customerID,
+            cursor: {
+                type: oracledb.CURSOR,
+                dir: oracledb.BIND_OUT
             }
+        }
         )
 
         const cursor = records.outBinds.cursor;
@@ -185,18 +185,18 @@ const deleteCustomer = async (req, res) => {
 
     let connection;
     const customerID = req.query.customerID;
-    
+
     try {
         connection = await oracledb.getConnection();
         await connection.execute(
             `BEGIN
                 delete_customer(:id);
-            END;`, {id: customerID}
+            END;`, { id: customerID }
         );
 
     }
     catch (err) {
-        
+
         console.log(err);
     }
     finally {
@@ -215,7 +215,7 @@ const deleteCustomer = async (req, res) => {
 const returnPainting = async (req, res) => {
 
     let connection;
-    let {customerID, paintingID} = req.query;
+    let { customerID, paintingID } = req.query;
 
     customerID = parseInt(customerID);
     paintingID = parseInt(paintingID);
@@ -226,9 +226,9 @@ const returnPainting = async (req, res) => {
         await connection.execute(
             `BEGIN
                 customer_return_painting(:customerID, :paintingID);
-            END;`, {customerID: customerID, paintingID: paintingID}
+            END;`, { customerID: customerID, paintingID: paintingID }
         )
-       
+
     }
     catch (err) {
 
@@ -247,11 +247,97 @@ const returnPainting = async (req, res) => {
     }
 }
 
+const editCustomer = async (req, res) => {
+    let connection;
+
+    let firstname = req.body.firstname;
+    let lastname = req.body.lastname;
+    let address = req.body.address;
+    let city = req.body.city;
+    let country = req.body.country;
+    let description = req.body.description;
+    let categoryID = req.body.category;
+
+    try {
+        connection = await oracledb.getConnection();
+
+        await connection.execute(
+            `BEGIN
+                update_customer(
+                    :id, :fname, :lname, :city, :country, :address, :categoryID, :description);
+            END;`,
+            {
+                id: req.query.customerID,
+                fname: firstname,
+                lname: lastname,
+                city: city,
+                country: country,
+                address: address,
+                categoryID: categoryID,
+                description: description
+            }
+        )
+    }
+    catch (err) {
+        console.log(err)
+    }
+    finally {
+        try {
+            res.redirect(`/customers/report?customerID=${req.query.customerID}`);
+
+            await connection.close()
+
+        }
+        catch (err) {
+            console.log(err)
+        }
+    }
+
+}
+
+const showEditForm = async (req, res) => {
+    let connection;
+    let error = null;
+    let customer;
+    let categories;
+    const customerID = req.query.customerID;
+
+    try {
+        connection = await oracledb.getConnection();
+
+        customer = await connection.execute(
+            `SELECT * FROM customers WHERE customerID = :id`, [customerID]
+        )
+
+        // get categories 
+        categories = await connection.execute(`SELECT categoryID, categoryName FROM CATEGORY`);
+
+        customer = customer.rows[0];
+    }
+    catch (err) {
+        error = err
+        console.log(err);
+    }
+    finally {
+        try {
+            await connection.close()
+
+            res.render('../src/views/customers/EditCustomer', { categories: categories.rows, data: customer,  })
+        }
+        catch (err) {
+            console.log(err.message)
+        }
+    }
+}
+
+
 module.exports = {
     listAllCustomers,
     generateReport,
     renderForm,
     processForm,
     deleteCustomer,
-    returnPainting
+    returnPainting,
+    editCustomer,
+    showEditForm
 }

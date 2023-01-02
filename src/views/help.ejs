@@ -24,6 +24,10 @@
             <li class="list-group-item">Paintings can be resubmitted by owners by clicking the resubmit button on their report page (only if returned)</li>
             <li class="list-group-item">Any type of records can be deleted by accessing the complete list through links given on the homepage</li>
             <li class="list-group-item">All sorts of errors are displayed as raw database errors since the project solely focuses on database, forms are validated through constraints and triggers created rather than on the front end.</li>
+
+            <li class="list-group-item">Any information about entities can be edited in their report section</li>
+
+            <li class="list-group-item">Scheduled jobs are enabled to update artist age, and to automatically return a painting to owner if it has not been rented for 6 months</li>
         </ol>
     </div>
 
@@ -39,6 +43,10 @@
             <li class="list-group-item">Deleting an owner will also <code>delete</code> the painting associated with them</li>
             <li class="list-group-item">Deleting an artist will also <code>delete</code> the painting associated with them</li>
             <li class="list-group-item">Deleting a customer will set the status to <code>available</code> for all paintings rented by that customer </li>
+            <li class="list-group-item">A painting <code>cannot be returned</code> to owner if it is currently rented out</li>
+            <li class="list-group-item">The owner cannot resubmit a painting until after 3 months of return</li>
+            <li class="list-group-item">A customer cannot return painting if the date of rent is greater than the current date</li>
+            <li class="list-group-item">Editing the painting's monthly price will only change rental price for those customers who have the painting rented</li>
         </ol>
     </div>
 

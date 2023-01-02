@@ -13,8 +13,9 @@
 <body>
     <%- include('../partials/navbar') %>
 
-        <div class="container-fluid">
+        <div class="container-fluid text-center">
             <h3 class="text-center mt-3">Customer Rental Report</h1>
+            <a  href="/customers/edit?customerID=<%= customer[0][0] %> " class="btn btn-primary text-center">Edit Profile Info</a>
         </div>
 
         <hr>
@@ -38,7 +39,7 @@
                 </div>
                 <div class="row info text-center">
                     <div class="col-sm">
-                        <span class="align-middle">Customer Address: <%= customer[0][4] %>, <%= customer[0][3] %>, <%= customer[0][4] %>   </span>
+                        <span class="align-middle">Customer Address: <%= customer[0][3] %>, <%= customer[0][4] %>, <%= customer[0][5] %>   </span>
                     </div>
 
                     <div class="col-sm ">
@@ -57,7 +58,7 @@
                         <th scope="col">Painting no.</th>
                         <th scope="col">Painting Title</th>
                         <th scope="col">Painting Theme</th>
-                        <th scope="col">Date of Hire</th>
+                        <th scope="col">Date of Rent</th>
                         <th scope="col">Date Due Back</th>
                         <th scope="col">Return date</th>
                         <th scope="col">Returned (Y/N)</th>

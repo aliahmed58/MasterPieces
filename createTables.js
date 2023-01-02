@@ -1,3 +1,17 @@
+// drop a scheduled job if exists
+const dropJobIfExists = async (connection, job_name) => {
+    await connection.execute(
+        `BEGIN
+        DBMS_SCHEDULER.drop_job(:job_name);
+        EXCEPTION
+            WHEN OTHERS THEN
+            IF SQLCODE != -27475 THEN
+                RAISE;
+            END IF;
+        END;`, [job_name]
+    )
+}
+
 // drop a table if it exists SQL 
 const dropTableIfExists = async (connection, table_name) => {
 
@@ -33,6 +47,10 @@ const dropAllTablesIfExist = async (connection) => {
     await dropTableIfExists(connection, 'ARTISTS');
     await dropTableIfExists(connection, 'OWNERS');
     await dropTableIfExists(connection, 'CATEGORY');
+
+    // drop jobs if exist
+    await dropJobIfExists(connection, 'return_to_owner_job');
+    await dropJobIfExists(connection, 'update_artist_age_job');
 }
 
 const insertDefaultValues = async (connection) => {
@@ -64,6 +82,37 @@ const createTables = async (connection) => {
 
     await connection.execute(
         `CREATE SEQUENCE pk_sequence`
+    )
+
+    // CREATE return_to_owner_job JOB for checking everyday if 6 months have passed for a painting to go unrented;
+    await connection.execute(
+        `BEGIN
+            DBMS_SCHEDULER.CREATE_JOB (
+                job_name => 'return_to_owner_job',
+                job_type => 'STORED_PROCEDURE',
+                job_action => 'return_unrented',
+                repeat_interval => 'FREQ=DAILY',
+                auto_drop => FALSE,
+                end_date => '02-JAN-2030 07.00.00 PM Australia/Sydney'
+            );
+
+            DBMS_SCHEDULER.CREATE_JOB (
+                job_name => 'update_artist_age_job',
+                job_type => 'STORED_PROCEDURE',
+                job_action => 'update_age',
+                repeat_interval => 'FREQ=SECONDLY',
+                auto_drop => FALSE,
+                end_date => '02-JAN-2030 07.00.00 PM Australia/Sydney'
+            );
+        END;`
+    )
+
+    // enable the job
+    await connection.execute(
+        `BEGIN
+            DBMS_SCHEDULER.ENABLE('return_to_owner_job');
+            DBMS_SCHEDULER.ENABLE('update_artist_age_job');
+        END;`
     )
 
     // CREATE OWNER TABLE
@@ -111,11 +160,12 @@ const createTables = async (connection) => {
             theme varchar(20) NOT NULL,
             artistID NUMBER NOT NULL,
             ownerID NUMBER NOT NULL,
-            status VARCHAR(20) DEFAULT 'available' NOT NULL,
-            insert_date DATE DEFAULT SYSDATE NOT NULL,
+            statusID VARCHAR(20) DEFAULT 'available' NOT NULL,
+            last_use_date DATE DEFAULT SYSDATE NOT NULL,
+            return_date DATE,
             CONSTRAINT fk_artist FOREIGN KEY (artistID) REFERENCES ARTISTS(artistID) ON DELETE CASCADE,
             CONSTRAINT fk_owner FOREIGN KEY (ownerID) REFERENCES OWNERS(ownerID) ON DELETE CASCADE,
-            CONSTRAINT fk_status FOREIGN KEY (status) REFERENCES STATUS(status_id)
+            CONSTRAINT fk_status FOREIGN KEY (statusID) REFERENCES STATUS(status_id)
         )`
     )
 
@@ -152,7 +202,7 @@ const createTables = async (connection) => {
             rent_date DATE NOT NULL,
             due_date DATE NOT NULL, 
             returned NUMBER(1) DEFAULT 0 NOT NULL,
-            return_date DATE,
+            customer_return_date DATE,
             monthly_rent NUMBER(38, 2) NOT NULL,
             customerID NUMBER NOT NULL,
             paintingID NUMBER NOT NULL,

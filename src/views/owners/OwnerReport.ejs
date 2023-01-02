@@ -13,8 +13,9 @@
 <body>
     <%- include('../partials/navbar') %>
 
-        <div class="container-fluid">
+        <div class="container-fluid text-center">
             <h3 class="text-center mt-3">Return to Owner Report</h1>
+            <a  href="/owners/edit?ownerID=<%= ownerInfo[0] %> " class="btn btn-primary text-center">Edit Profile Info</a>
         </div>
 
         <hr>
@@ -22,15 +23,15 @@
             <div class="container subcontainer card shadow rounded">
                 <div class="row info text-center">
                     <div class="col-sm">
-                        <span class="align-middle">Owner number: <%= data[0] %>  </span>
+                        <span class="align-middle">Owner number: <%= ownerInfo[0] %>  </span>
                     </div>
                     <div class="col-sm">
-                        <span class="align-middle">Owner Name: <%= data[1] %> <%= data[2] %>  </span>
+                        <span class="align-middle">Owner Name: <%= ownerInfo[1] %> <%= ownerInfo[2] %>  </span>
                     </div>
                 </div>
                 <div class="row info text-center">
                     <div class="col-sm">
-                        <span class="align-middle">Customer Address: <%= data[5] %>, <%= data[3] %>, <%= data[4] %>   </span>
+                        <span class="align-middle">Owner Address: <%= ownerInfo[5] %>, <%= ownerInfo[3] %>, <%= ownerInfo[4] %>   </span>
                     </div>
                 </div>
             </div>
@@ -39,11 +40,12 @@
         <hr>
 
         <div class="contianer table-container">
-            <table class="table text-center table-bordered table-hover table-responsive">
+            <table class="table text-center table-bordered table-responsive">
                 <thead>
                     <tr>
                         <th scope="col">Painting no.</th>
                         <th scope="col">Painting Title</th>
+                        <th scope="col">Status</th>
                         <th scope="col">Return Date</th>
                         <th scope="col">Resubmit</th>
                     </tr>
@@ -51,14 +53,27 @@
 
                 <tbody>
                     <!-- use for loop to fill the table -->
-                    <% for( let i=0; i < 10; i++ ) { %>
+                    <% for( let i=0; i < data.length; i++ ) { %>
                         <tr>
-                            <td scope="row"></td>
-                            <td> </td>
-                            <td></td>
-                            <td><a href="#" class="btn">Resubmit</a></td>
+                            <td scope="row"><%= data[i][0] %> </td>
+                            <td><%= data[i][1] %> </td>
+                            <td><%= data[i][2] %> </td>
+                            <td>
+                                <% if (data[i][2] !== 'returned') { %>
+                                    -
+                                <% } else { %>
+                                    <%= String(data[i][3]).slice(0, 15) %> 
+                                <% } %> 
+                            </td>
+                            <td>
+                                <% if (data[i][2] === 'returned') { %>
+                                    <a href="/owners/report/resubmit?pid=<%= data[i][0] %>&ownerID=<%= ownerInfo[0] %>" class="btn">Resubmit</a>
+                                <% } else { %>
+                                    <a class="btn disabled">Resubmit</a>
+                                <% } %> 
+                            </td>
                         </tr>
-
+                        
                         <% } %>
 
                 </tbody>

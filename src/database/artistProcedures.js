@@ -12,6 +12,58 @@ const checkDobTrigger = async (connection) => {
     )
 }
 
+// Runs in the scheduler job and updates age of artists
+const updateAgeProcedure = async (connection) => {
+    await connection.execute(
+        `CREATE OR REPLACE PROCEDURE update_age AS
+        age_val NUMBER;
+        BEGIN
+            FOR artist IN (SELECT * FROM ARTISTS WHERE death_date IS NOT NULL)
+            LOOP
+                age_val := CEIL(ABS(MONTHS_BETWEEN(SYSDATE, a_dob)) / 12);
+                UPDATE ARTISTS set age = age_val WHERE artistID = artist.artistID;
+            END LOOP;
+            COMMIT;
+        END;`
+    )
+}
+
+// update artist info procedure
+const updateArtist = async (connection) => {
+    await connection.execute(
+        `CREATE OR REPLACE PROCEDURE update_artist (
+            a_id NUMBER,
+            f_name VARCHAR, l_name VARCHAR, 
+            a_country VARCHAR, a_dob DATE, 
+            a_death DATE
+            )
+        IS
+            age_val number;
+            alive_bool number;
+        BEGIN
+
+            IF a_death IS NULL THEN
+                age_val := CEIL(ABS(MONTHS_BETWEEN(SYSDATE, a_dob)) / 12);
+                alive_bool := 1; 
+            ELSE
+                alive_bool := 0;
+                age_val := CEIL(ABS(MONTHS_BETWEEN(a_death, a_dob)) / 12);
+            END IF;
+        
+            UPDATE ARTISTS 
+            SET first_name = f_name, 
+            last_name = l_name,
+            country = a_country, 
+            dob = TRUNC(a_dob),
+            death_date = TRUNC(a_death), alive = alive_bool, age = age_val 
+            WHERE artistID = a_id;
+
+            COMMIT;
+
+        END;`
+    )
+}
+
 
 // insert a new artist procedure
 const insertArtistProcedure = async (connection) => {
@@ -27,11 +79,11 @@ const insertArtistProcedure = async (connection) => {
         BEGIN
 
             IF a_death IS NULL THEN
-                age := (EXTRACT(YEAR FROM SYSDATE) - EXTRACT(YEAR FROM a_dob));
+                age := CEIL(ABS(MONTHS_BETWEEN(SYSDATE, a_dob)) / 12);
                 alive := 1; 
             ELSE
                 alive := 0;
-                age := (EXTRACT(YEAR FROM a_death) - EXTRACT(YEAR FROM a_dob));
+                age := CEIL(ABS(MONTHS_BETWEEN(a_death, a_dob)) / 12);
             END IF;
         
             INSERT INTO ARTISTS (first_name, last_name, country, dob, death_date, alive, age) 
@@ -82,6 +134,8 @@ const createArtistProcedures = async (connection) => {
     await deleteArtistProcedure(connection)
     await checkDobTrigger(connection)
     await generateReportProcedure(connection)
+    await updateAgeProcedure(connection);
+    await updateArtist(connection);
 }
 
 module.exports = createArtistProcedures

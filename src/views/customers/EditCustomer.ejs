@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="/public/global.css" />
+    <link rel="stylesheet" href="/public/forms.css">
+    <title>Edit Customer</title>
+</head>
+
+<body>
+
+    <%- include ('../partials/navbar') %>
+
+        <form method="POST" action="/customers/edit?customerID=<%= data[0] %> ">
+            <div class="container">
+                <div class="row">
+                    <div class="form-group col-sm-3">
+                        <label for="inputName">First Name</label>
+                        <input value="<%= data[1] %>" required type="text" class="form-control" id="inputName" name="firstname" placeholder="First Name">
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        <label for="inputName">Last Name</label>
+                        <input value="<%= data[2] %>" required type="text" class="form-control" id="inputName" name="lastname" placeholder="Last Name">
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        <label for="inputName">City</label>
+                        <input value="<%= data[3] %>" required type="text" class="form-control" id="inputName" name="city" placeholder="City">
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        <label for="inputName">Country</label>
+                        <input value="<%= data[4] %>" required type="text" class="form-control" id="inputName" name="country" placeholder="Country">
+                    </div>
+
+                    <div class="form-group col-sm-9">
+                        <label for="inputAddress">Address</label>
+                        <input value="<%= data[5] %>" required type="text" class="form-control" id="inputAddress" name="address" placeholder="Address">
+                    </div>
+
+                    <div class="form-group col-sm-3">
+                        <label for="category">Category</label>
+                        <select required class="form-control" name="category" id="category">
+                            <option value="" selected disabled hidden>Choose category</option>
+                            <% for( let index = 0; index < categories.length; index++ ) { %>
+                                <% if (categories[index][0] === data[6]) { %>
+                                    <option selected value="<%= categories[index][0] %>"><%= categories[index][1] %> </option>
+                                <% } else { %>
+                                    <option value="<%= categories[index][0] %>"><%= categories[index][1] %> </option>
+                                <% } %> 
+                            <% } %>
+                        </select>
+                    </div>
+
+                </div>
+
+                <div class="row">
+
+                    <div class="form-group col">
+                        <label for="inputDesc">Description</label>
+                        <input value="<%= data[7] %> " required type="text" class="form-control" id="inputDesc" name="description" placeholder="Description">
+                    </div>
+                </div>
+
+                <div class="row">
+
+                    <div class="col-sm-10"></div>
+
+                    <div class="form-group col-sm-2">
+                        <label for="inputDOB"></label>
+                        <input type="submit" class="submitbtn form-control" id="inputDOB">
+                    </div>
+                </div>
+
+            </div>
+            </div>
+        </form>
+
+
+</body>
+
+</html>

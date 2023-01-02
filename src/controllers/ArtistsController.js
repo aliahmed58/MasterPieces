@@ -68,7 +68,7 @@ const generateReport = async (req, res) => {
         * 12: Owner First Name
         * 13: Owner Last Name
         * 14: Owner cellphone
-        */  
+        */
 
         let records = await connection.execute(
             `BEGIN
@@ -94,7 +94,7 @@ const generateReport = async (req, res) => {
             queryStream.on('close', resolve);
         });
 
-        
+
         await consumeStream;
 
         // if there aren't any paintings for that artist, fetch his own data 
@@ -125,7 +125,7 @@ const generateReport = async (req, res) => {
 
 // render form for new artist
 const renderForm = (req, res) => {
-    res.render('../src/views/artists/NewArtist', {err : null})
+    res.render('../src/views/artists/NewArtist', { err: null })
 }
 
 // process input form
@@ -163,7 +163,7 @@ const processForm = async (req, res) => {
         error = err;
         console.log(err.message)
         // if error is caught - render back the form with the error displayed
-        res.render('../src/views/artists/NewArtist', {err: err.message})
+        res.render('../src/views/artists/NewArtist', { err: err.message })
         return;
     }
     finally {
@@ -215,6 +215,98 @@ const deleteArtist = async (req, res) => {
     }
 }
 
+const showEditForm = async (req, res) => {
+
+    let connection;
+    let error = null;
+    let artist;
+    const artistID = req.query.artistID;
+
+    try {
+        connection = await oracledb.getConnection();
+
+        artist = await connection.execute(
+            `SELECT * FROM artists WHERE artistID = :id`, [artistID]
+        )
+
+        artist = artist.rows[0];
+
+        let month = artist[4].getMonth() + 1
+        if (month < 10) month  = '0' + month;
+
+        let day = artist[4].getDay()
+        if (day < 10) day = '0' + day;
+
+        artist[4] = `${artist[4].getFullYear()}-${month}-${day}`
+
+        if (artist[5] !== null) {
+            let month = artist[5].getMonth() + 1
+            if (month < 10) month  = '0' + month;
+            let day = artist[5].getDay() + 1
+            if (day < 10) day = '0' + day;
+            
+            artist[5] = `${artist[5].getFullYear()}-${month}-${day}`
+        }
+
+    }
+    catch (err) {
+        error = err
+        console.log(err);
+    }
+    finally {
+        try {
+            await connection.close()
+
+            res.render('../src/views/artists/EditArtist', {err: error, data: artist})
+        }
+        catch (err) {
+            console.log(err.message)
+        }
+    }
+}
+
+const editArtist = async (req, res) => {
+    let connection;
+
+    let { firstname, lastname, country, dob, dod } = req.body;
+
+    let error = null;
+
+    dob = convertDate(dob)
+
+    if (dod === '') dod = null;
+    else dod = convertDate(dod)
+
+    try {
+        connection = await oracledb.getConnection();
+
+        await connection.execute(
+            `BEGIN
+                update_artist(:id, :fname, :lname, :country, :dob, :dod);
+            END;`, {id: req.query.artistID, fname: firstname, lname: lastname, country: country, dob: dob, dod: dod}
+        )
+
+    }
+    catch (err) {
+
+        error = err;
+        res.render('../src/views/artists/EditArtist', {err: error})
+        return;
+        console.log(err);
+    }
+    finally {
+        try {
+            await connection.close();
+            if (!error) {
+                res.redirect(`/artists/report?artistID=${req.query.artistID}`)
+            }
+            }
+        catch (err) {
+            console.log(err.message)
+        }
+    }
+}
+
 
 module.exports = {
     listAllArtists,
@@ -222,4 +314,6 @@ module.exports = {
     renderForm,
     processForm,
     deleteArtist,
+    editArtist,
+    showEditForm
 }

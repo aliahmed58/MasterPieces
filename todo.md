@@ -8,3 +8,6 @@
 - [ ] rename phone_check constraint to something more understandable
 - [x] host it on heroku
 - [ ] date of death greater than or equal to today
+- [ ] set status to single available or not
+- [ ] returning painting by customer check dates
+- [ ] do not let rent painting if its status is hired or returned
