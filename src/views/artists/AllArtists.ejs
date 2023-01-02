@@ -30,7 +30,7 @@
                             Artist no: <%= data[row][0] %>
                         </div>
                         <div class="card-body">
-                            <h5 class="card-title">Artist Name: <%= data[row][1] %>
+                            <h5 class="card-title">Artist Name: <%= data[row][1] %> <%= data[row][2] %> 
                             </h5>
                             <a href="/artists/report/?artistID=<%=data[row][0] %>" class="btn">View Report</a>
                             <a href="/artists/delete/?artistID=<%= data[row][0] %>" class="btn">Delete</a>

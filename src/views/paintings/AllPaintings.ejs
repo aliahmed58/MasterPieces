@@ -65,9 +65,9 @@
                                     </table>
                                     <a href="/paintings/delete/?paintingID=<%= data[row][0] %> " class="btn">Delete</a>
                                     <% if (data[row][6] !== 'returned') { %>
-                                        <a href="/paintings/return/?paintingID=<%= data[row][0] %> " class="btn">Return (test)</a>
+                                        <a href="/paintings/return/?paintingID=<%= data[row][0] %> " class="btn">Return to owner (test)</a>
                                     <% } else { %>
-                                        <a href="/paintings/return/?paintingID=<%= data[row][0] %> " class="btn disabled">Return (test)</a>
+                                        <a href="/paintings/return/?paintingID=<%= data[row][0] %> " class="btn disabled">Return to owner (test)</a>
                                     <% } %> 
                                     <a href="/paintings/edit/?paintingID=<%= data[row][0] %> " class="btn btn-primary">Edit info</a>
                                 </div>
