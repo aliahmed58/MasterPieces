@@ -37,7 +37,7 @@ To run the expresjs application:
 
 1. Install the dependencies using ```npm install```
 
-2. If you do not have any oracle database instance on your local computer, download and install *Oracle Database XE* using the instructions given here: [Install Oracle XE for nodejs](https://www.oracle.com/database/technologies/appdev/quickstartnodeonprem.html) 
+2. If you do not have any oracle database instance (local or remote), download and install *Oracle Database XE* using the instructions given here: [Install Oracle XE for nodejs](https://www.oracle.com/database/technologies/appdev/quickstartnodeonprem.html)
 
 4. Create a ```.env``` file in the root directory (same as ```server.js```) and add the following variables:
     - ```PORT = XXXX``` the port you wish to run the server on 
